@@ -5,53 +5,84 @@
 <title>JEAL Studio 3D</title>
 <style>
     body {
-        background: #111;
-        color: white;
+        background: #050509;
+        color: #ffffff;
         font-family: Arial, sans-serif;
         text-align: center;
-        padding-top: 50px;
+        padding-top: 60px;
+        margin: 0;
     }
-    h1 {
+    .logo {
+        font-size: 34px;
+        font-weight: bold;
+        color: #b066ff;
+        text-shadow:
+            0 0 8px #7A00FF,
+            0 0 18px #7A00FF,
+            0 0 28px #9D4DFF;
+        margin-bottom: 10px;
+    }
+    .subtitle {
+        font-size: 16px;
+        color: #ccccff;
         margin-bottom: 40px;
-        font-size: 32px;
+        text-shadow: 0 0 6px #7A00FF55;
     }
     .btn {
         display: block;
         width: 80%;
-        max-width: 300px;
+        max-width: 320px;
         margin: 15px auto;
         padding: 15px;
-        background: #ff0066;
-        color: white;
+        background: #7A00FF;
+        color: #ffffff;
         text-decoration: none;
         border-radius: 10px;
         font-size: 20px;
         transition: 0.2s;
+        box-shadow: 0 0 10px #7A00FF66;
     }
     .btn:hover {
-        background: #ff3385;
+        background: #9D4DFF;
+        box-shadow: 0 0 18px #9D4DFFAA;
+        transform: translateY(-1px);
     }
     .disabled {
-        background: #444;
-        color: #888;
+        background: #2a2a3a;
+        color: #777;
+        box-shadow: none;
         pointer-events: none;
+    }
+    .footer {
+        margin-top: 40px;
+        font-size: 12px;
+        color: #666;
     }
 </style>
 </head>
 <body>
 
-<h1>JEAL Studio 3D</h1>
+<div class="logo">JEAL Studio 3D</div>
+<div class="subtitle">Violeta neón · Estilo Gengar</div>
 
 <!-- INSTAGRAM -->
-<a class="btn" href="https://www.instagram.com/jealstudio3d?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
+<a class="btn" href="https://www.instagram.com/jealstudio3d?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">
+    Instagram
+</a>
 
 <!-- WHATSAPP -->
-<a class="btn" href="https://wa.me/541161067544">WhatsApp</a>
+<a class="btn" href="https://wa.me/541161067544">
+    WhatsApp
+</a>
 
-<!-- BOTONES DESACTIVADOS (NO HACEN NADA POR AHORA) -->
+<!-- BOTONES DESACTIVADOS (POR AHORA) -->
 <a class="btn disabled">Catálogo (próximamente)</a>
 <a class="btn disabled">Pagos (próximamente)</a>
 <a class="btn disabled">Drive (próximamente)</a>
+
+<div class="footer">
+    JEAL Studio 3D · QR dinámico
+</div>
 
 </body>
 </html>
