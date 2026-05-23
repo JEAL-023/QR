@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ficha de Mascota</title>
+<style>
+    body {
+        background: #050509;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+    }
+    .nombre {
+        font-size: 32px;
+        font-weight: bold;
+        color: #b066ff;
+        text-shadow: 0 0 10px #7A00FF;
+        margin-bottom: 10px;
+    }
+    .foto {
+        width: 180px;
+        height: 180px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 2px solid #7A00FF;
+        box-shadow: 0 0 12px #7A00FF88;
+        margin-bottom: 20px;
+    }
+    .dato {
+        font-size: 18px;
+        margin: 8px 0;
+    }
+    .btn {
+        display: block;
+        margin: 20px auto;
+        padding: 15px;
+        width: 80%;
+        max-width: 300px;
+        background: #7A00FF;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 20px;
+        box-shadow: 0 0 12px #7A00FF88;
+    }
+</style>
+</head>
+<body>
+
+<div class="nombre">Nombre de la Mascota</div>
+
+<img class="foto" src="foto.jpg" alt="Mascota">
+
+<div class="dato">Dueño: Nombre del dueño</div>
+<div class="dato">Teléfono: 11-0000-0000</div>
+<div class="dato">Dirección: Calle 123</div>
+<div class="dato">Info médica: Ninguna</div>
+
+<a class="btn" href="https://wa.me/541100000000">Contactar por WhatsApp</a>
+
+</body>
+</html>
