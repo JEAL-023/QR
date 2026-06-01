@@ -99,6 +99,13 @@
       margin: 18px 0 20px;
     }
 
+    /* ANIMACIÓN DE BOTONES */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.015); }
+      100% { transform: scale(1); }
+    }
+
     .btn {
       display: block;
       width: 100%;
@@ -112,7 +119,8 @@
       font-size: 0.98rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      transition: all 0.18s ease;
+      transition: all 0.25s ease;
+      animation: pulse 4s infinite ease-in-out;
     }
 
     .btn-primary {
@@ -121,8 +129,8 @@
     }
 
     .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.8);
       border-color: var(--dorado-claro);
     }
 
@@ -205,11 +213,9 @@
 
     <div class="info-block">
       <div class="section-title">Horarios</div>
-      Martes a Jueves: 08:00 - 23:00<br>
-      Viernes: 08:00 - 01:00<br>
-      Sábado: 08:00 - 02:00<br>
-      Domingo: 19:00 - 23:00<br>
-      Lunes: Cerrado
+      Lunes a Jueves: 08:00 - 23:00<br>
+      Viernes y Sábado: 08:00 - 01:00<br>
+      Domingo: 19:00 - 23:00
     </div>
 
     <div class="info-block">
@@ -245,13 +251,13 @@
       const totalMin = hora * 60 + minutos;
 
       const horarios = {
-        1: [480, 1380],  // Martes 08:00–23:00
-        2: [480, 1380],  // Miércoles
-        3: [480, 1380],  // Jueves
-        4: [480, 1500],  // Viernes 08:00–01:00
-        5: [480, 1560],  // Sábado 08:00–02:00
-        6: [1140, 1380], // Domingo 19:00–23:00
-        0: null          // Lunes cerrado
+        1: [480, 1380],  // Lunes
+        2: [480, 1380],  // Martes
+        3: [480, 1380],  // Miércoles
+        4: [480, 1380],  // Jueves
+        5: [480, 1500],  // Viernes (08:00 → 01:00)
+        6: [480, 1500],  // Sábado (08:00 → 01:00)
+        0: [1140, 1380]  // Domingo (19:00 → 23:00)
       };
 
       const rango = horarios[dia];
@@ -264,20 +270,28 @@
 
       const [abre, cierra] = rango;
 
-      if (totalMin >= abre && totalMin <= cierra) {
-        const minutosRestantes = cierra - totalMin;
+      let abierto = false;
 
+      if (cierra > abre) {
+        abierto = totalMin >= abre && totalMin <= cierra;
+      } else {
+        abierto = totalMin >= abre || totalMin <= cierra;
+      }
+
+      if (abierto) {
+        const minutosRestantes = (cierra > abre ? cierra : cierra + 1440) - totalMin;
         if (minutosRestantes <= 30) {
           estado.innerHTML = `<span class="status-open">Abierto (cierra pronto)</span>`;
         } else {
           estado.innerHTML = `<span class="status-open">Abierto ahora</span>`;
         }
-
-      } else if (totalMin < abre) {
-        const faltan = abre - totalMin;
-        estado.innerHTML = `<span class="status-closed">Cerrado (abre en ${faltan} min)</span>`;
       } else {
-        estado.innerHTML = `<span class="status-closed">Cerrado</span>`;
+        if (totalMin < abre) {
+          const faltan = abre - totalMin;
+          estado.innerHTML = `<span class="status-closed">Cerrado (abre en ${faltan} min)</span>`;
+        } else {
+          estado.innerHTML = `<span class="status-closed">Cerrado</span>`;
+        }
       }
     }
 
