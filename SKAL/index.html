@@ -47,6 +47,13 @@
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid var(--dorado);
+      animation: glow 4s infinite ease-in-out;
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 8px rgba(212,175,55,0.3); }
+      50% { box-shadow: 0 0 18px rgba(212,175,55,0.7); }
+      100% { box-shadow: 0 0 8px rgba(212,175,55,0.3); }
     }
 
     .logo img {
@@ -75,6 +82,13 @@
       font-size: 0.95rem;
       color: var(--dorado-claro);
       margin-bottom: 18px;
+    }
+
+    .divider {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--dorado), transparent);
+      margin: 18px auto;
     }
 
     .buttons {
@@ -158,25 +172,19 @@
     <p class="subtitle">Pizzería & Empanadas · Moreno</p>
     <p class="tagline">Estilo vikingo y buena comida 🍕🍺</p>
 
-    <div class="buttons">
-      <a
-        class="btn btn-primary"
-        href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20Quiero%20hacer%20un%20pedido."
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Pedir por WhatsApp
-      </a>
+    <div class="divider"></div>
 
-      <a
-        class="btn"
-        href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20¿Me%20pasás%20el%20menú%20completo?"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Ver menú en WhatsApp
-      </a>
+    <div class="buttons">
+      <a class="btn btn-primary" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20Quiero%20hacer%20un%20pedido." target="_blank">Pedir por WhatsApp</a>
+
+      <a class="btn" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20¿Me%20pasás%20el%20menú%20completo?" target="_blank">Ver menú</a>
+
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=General+Manuel+Belgrano+414+Moreno" target="_blank">Cómo llegar</a>
+
+      <a class="btn" href="tel:+5491170646339">Llamar</a>
     </div>
+
+    <div class="divider"></div>
 
     <div class="info-block">
       <div class="section-title">Horarios</div>
