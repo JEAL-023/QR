@@ -2,10 +2,200 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Prueba SKÅL</title>
+  <title>SKÅL - Pizzería</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --negro: #000000;
+      --dorado: #D4AF37;
+      --dorado-claro: #F5D27A;
+      --blanco-suave: #F8F5E9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: var(--negro);
+      color: var(--blanco-suave);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 16px;
+      padding: 24px 18px 28px;
+      background: radial-gradient(circle at top, #1b1b1b 0%, #000000 60%);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .logo {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--dorado);
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--dorado);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--blanco-suave);
+      opacity: 0.9;
+      margin-bottom: 18px;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      color: var(--dorado-claro);
+      margin-bottom: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 18px 0 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--dorado);
+      background: transparent;
+      color: var(--blanco-suave);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.98rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all 0.18s ease;
+    }
+
+    .btn-primary {
+      background: var(--dorado);
+      color: var(--negro);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+      border-color: var(--dorado-claro);
+    }
+
+    .btn-primary:hover {
+      background: var(--dorado-claro);
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--dorado-claro);
+      margin-bottom: 6px;
+      margin-top: 10px;
+    }
+
+    .info-block {
+      text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      color: var(--blanco-suave);
+    }
+
+    .info-block strong {
+      color: var(--dorado-claro);
+    }
+
+    .address {
+      margin-top: 6px;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: rgba(245, 210, 122, 0.8);
+      opacity: 0.9;
+    }
+  </style>
 </head>
-<body style="background: #000; color: #fff; font-family: sans-serif;">
-  <h1>SKÅL PRUEBA</h1>
-  <p>Si ves este texto, la página está bien vinculada.</p>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="SKALLOGO.jpeg" alt="Logo SKÅL">
+    </div>
+
+    <h1>SKÅL</h1>
+    <p class="subtitle">Pizzería & Empanadas · Moreno</p>
+    <p class="tagline">Estilo vikingo y buena comida 🍕🍺</p>
+
+    <div class="buttons">
+      <a
+        class="btn btn-primary"
+        href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20Quiero%20hacer%20un%20pedido."
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Pedir por WhatsApp
+      </a>
+
+      <a
+        class="btn"
+        href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20¿Me%20pasás%20el%20menú%20completo?"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver menú en WhatsApp
+      </a>
+    </div>
+
+    <div class="info-block">
+      <div class="section-title">Horarios</div>
+      <strong>Abierto ahora</strong><br>
+      Martes a Jueves: 08:00 - 23:00<br>
+      Viernes: 08:00 - 01:00<br>
+      Sábado: 08:00 - 02:00<br>
+      Domingo: 19:00 - 23:00
+    </div>
+
+    <div class="info-block address">
+      <div class="section-title">Dirección</div>
+      General Manuel Belgrano 414, B1744<br>
+      Moreno, Provincia de Buenos Aires, Argentina
+    </div>
+
+    <p class="footer-note">
+      Escaneá este código en tus llaveros, cartas o placas para ir directo a SKÅL.
+    </p>
+  </div>
 </body>
 </html>
