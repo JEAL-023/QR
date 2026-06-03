@@ -1,86 +1,738 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>JEAL Studio 3D</title>
+  <meta charset="UTF-8" />
+  <title>JEAL Studio 3D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-main: #05030a;
+      --violet: #8b5bff;
+      --violet-soft: #b08dff;
+      --accent: #ff4fd8;
+      --text-main: #f5f5ff;
+      --text-muted: #b3b3d1;
+    }
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-<style>
     body {
-        background: #050509;
-        color: #ffffff;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding-top: 60px;
-        margin: 0;
+      background: radial-gradient(circle at top, #1a1030 0, #05030a 45%, #020109 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
-    .logo {
-        font-size: 34px;
-        font-weight: bold;
-        color: #b066ff;
-        text-shadow:
-            0 0 8px #7A00FF,
-            0 0 18px #7A00FF,
-            0 0 28px #9D4DFF;
-        margin-bottom: 10px;
+
+    /* Fondo “Gengar” abstracto */
+    .bg-gengar {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
     }
-    .subtitle {
-        font-size: 16px;
-        color: #ccccff;
-        margin-bottom: 40px;
-        text-shadow: 0 0 6px #7A00FF55;
+
+    .bg-orb {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: float 18s ease-in-out infinite alternate;
     }
+
+    .bg-orb.violet {
+      background: radial-gradient(circle, #b08dff, #5b2bff);
+      top: -80px;
+      left: -40px;
+    }
+
+    .bg-orb.pink {
+      background: radial-gradient(circle, #ff4fd8, #7a1a5f);
+      bottom: -120px;
+      right: -40px;
+      animation-delay: 4s;
+    }
+
+    .bg-orb.dark {
+      background: radial-gradient(circle, #2b1038, #05030a);
+      top: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 520px;
+      height: 520px;
+      opacity: 0.25;
+      animation-delay: 8s;
+    }
+
+    @keyframes float {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(20px, -30px, 0) scale(1.05); }
+    }
+
+    .bg-noise {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    main {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .logo-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .logo-main-mark {
+      font-size: 1.4rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--violet-soft);
+    }
+
+    .logo-main-name {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #ffffff, var(--violet-soft), var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 18px rgba(139, 91, 255, 0.4);
+    }
+
+    .logo-main-sub {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(139, 91, 255, 0.5);
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.25), rgba(5, 3, 10, 0.9));
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--violet-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4cff9a;
+      box-shadow: 0 0 10px #4cff9a;
+    }
+
+    .hero {
+      margin-bottom: 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      color: var(--violet-soft);
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 460px;
+      margin-bottom: 18px;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(176, 141, 255, 0.4);
+      color: var(--violet-soft);
+      background: rgba(5, 3, 10, 0.8);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
     .btn {
-        display: block;
-        width: 80%;
-        max-width: 320px;
-        margin: 15px auto;
-        padding: 15px;
-        background: #7A00FF;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 10px;
-        font-size: 20px;
-        transition: 0.2s;
-        box-shadow: 0 0 10px #7A00FF66;
+      position: relative;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(139, 91, 255, 0.7);
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.3), rgba(5, 3, 10, 0.95));
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      overflow: hidden;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, border-color 0.12s ease-out;
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+
+    .btn-primary {
+      border-color: var(--accent);
+      background: radial-gradient(circle at top, rgba(255, 79, 216, 0.35), rgba(5, 3, 10, 0.95));
+      box-shadow: 0 0 18px rgba(255, 79, 216, 0.35);
+    }
+
+    .btn-secondary {
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.25), rgba(5, 3, 10, 0.95));
+    }
+
+    .btn-ghost {
+      background: rgba(5, 3, 10, 0.7);
+      border-style: dashed;
+      border-color: rgba(139, 91, 255, 0.5);
+      color: var(--text-muted);
+    }
+
+    .btn span.icon {
+      font-size: 1.1rem;
+    }
+
     .btn:hover {
-        background: #9D4DFF;
-        box-shadow: 0 0 18px #9D4DFFAA;
-        transform: translateY(-1px);
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(139, 91, 255, 0.4);
+      border-color: var(--violet-soft);
     }
-    .disabled {
-        background: #2a2a3a;
-        color: #777;
-        box-shadow: none;
-        pointer-events: none;
+
+    .btn-primary:hover {
+      box-shadow: 0 0 22px rgba(255, 79, 216, 0.55);
+      border-color: var(--accent);
     }
-    .footer {
-        margin-top: 40px;
-        font-size: 12px;
-        color: #666;
+
+    .btn:hover::before {
+      opacity: 1;
     }
-</style>
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-card {
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.25), rgba(5, 3, 10, 0.96));
+      border: 1px solid rgba(139, 91, 255, 0.5);
+      box-shadow: 0 0 26px rgba(5, 3, 10, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 210deg, rgba(139, 91, 255, 0.1), transparent 40%, rgba(255, 79, 216, 0.12), transparent 70%, rgba(139, 91, 255, 0.1));
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      animation: spin 26s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--violet-soft);
+      margin-bottom: 6px;
+    }
+
+    .hero-card-alias {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 1.05rem;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(5, 3, 10, 0.85);
+      border: 1px solid rgba(176, 141, 255, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .hero-card-alias span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(255, 79, 216, 0.8);
+    }
+
+    .hero-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .hero-card-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    section {
+      margin-bottom: 28px;
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.12), rgba(5, 3, 10, 0.96));
+      border: 1px solid rgba(139, 91, 255, 0.35);
+    }
+
+    section h2 {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--violet-soft);
+      margin-bottom: 10px;
+    }
+
+    .section-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .chip {
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(5, 3, 10, 0.9);
+      border: 1px solid rgba(139, 91, 255, 0.4);
+      color: var(--text-main);
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .two-cols {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card-soft {
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(5, 3, 10, 0.9);
+      border: 1px solid rgba(139, 91, 255, 0.3);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .card-soft strong {
+      color: var(--text-main);
+    }
+
+    .logo-classic-box {
+      border-radius: 14px;
+      padding: 12px;
+      background: radial-gradient(circle at top, rgba(139, 91, 255, 0.18), rgba(5, 3, 10, 0.96));
+      border: 1px dashed rgba(176, 141, 255, 0.6);
+      text-align: center;
+    }
+
+    .logo-classic-mark {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--violet-soft);
+      margin-bottom: 4px;
+    }
+
+    .logo-classic-placeholder {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(176, 141, 255, 0.7);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      background: rgba(5, 3, 10, 0.9);
+      box-shadow: 0 0 16px rgba(139, 91, 255, 0.4);
+    }
+
+    .logo-classic-placeholder span {
+      font-size: 0.9rem;
+      margin-left: 6px;
+      color: var(--violet-soft);
+    }
+
+    footer {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto 18px;
+      padding: 0 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    a.link {
+      color: var(--violet-soft);
+      text-decoration: none;
+    }
+
+    a.link:hover {
+      text-decoration: underline;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(5, 3, 10, 0.96);
+      border: 1px solid rgba(139, 91, 255, 0.7);
+      color: var(--text-main);
+      font-size: 0.8rem;
+      box-shadow: 0 0 18px rgba(5, 3, 10, 0.9);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
+    }
+  </style>
 </head>
 <body>
+  <div class="bg-gengar">
+    <div class="bg-orb violet"></div>
+    <div class="bg-orb pink"></div>
+    <div class="bg-orb dark"></div>
+    <div class="bg-noise"></div>
+  </div>
 
-<div class="logo">JEAL Studio 3D</div>
-<div class="subtitle">...</div>
+  <main>
+    <header>
+      <div class="logo-main">
+        <div class="logo-main-mark">JEAL STUDIO</div>
+        <div class="logo-main-name">JEAL Studio 3D</div>
+        <div class="logo-main-sub">Impresión 3D · Modelado · Placas QR</div>
+      </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Muestra interactiva · JEAL Studio
+      </div>
+    </header>
 
-<a class="btn" href="https://www.instagram.com/jealstudio3d?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">Instagram</a>
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">
+          Placas QR, logos y piezas <span>3D</span> con estética oscura y precisión de estudio.
+        </h1>
+        <p class="hero-subtitle">
+          JEAL Studio 3D combina diseño, modelado y impresión multicolor para crear piezas únicas:
+          placas QR funcionales, logos en relieve, llaveros y prototipos listos para usar.
+        </p>
 
-<a class="btn" href="https://wa.me/541161067544">WhatsApp</a>
+        <div class="hero-tags">
+          <span class="tag">Placas QR funcionales</span>
+          <span class="tag">Logos 3D en relieve</span>
+          <span class="tag">Impresión multicolor</span>
+          <span class="tag">Diseño + ingeniería</span>
+        </div>
 
-<a class="btn disabled">Catálogo (próximamente)</a>
-<a class="btn disabled">Pagos (próximamente)</a>
-<a class="btn disabled">Drive (próximamente)</a>
+        <div class="hero-actions">
+          <!-- REEMPLAZÁ EL TELÉFONO POR EL TUYO -->
+          <a class="btn btn-primary" href="https://wa.me/5491112345678?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">
+            <span class="icon">💬</span>
+            Hacer un pedido
+          </a>
+          <a class="btn btn-secondary" href="#portfolio">
+            <span class="icon">🧩</span>
+            Ver trabajos
+          </a>
+          <a class="btn btn-ghost" href="#pricing">
+            <span class="icon">💰</span>
+            Precios orientativos
+          </a>
+        </div>
 
-<div class="footer">
-    JEAL Studio 3D · QR dinámico
-</div>
+        <p class="hero-note">
+          Esta página es una muestra real del flujo de trabajo de JEAL Studio: diseño, modelado, laminado y
+          presentación listos para producción.
+        </p>
+      </div>
 
+      <div class="hero-card">
+        <div class="hero-card-inner">
+          <div class="hero-card-title">Pagos y envíos de dinero</div>
+          <div class="hero-card-alias">
+            <span class="dot"></span>
+            <span>Alias:&nbsp;<strong>Miviajealespacio</strong></span>
+          </div>
+          <div class="hero-card-actions">
+            <!-- REEMPLAZÁ ESTE LINK POR TU LINK DE COBRO SI QUERÉS -->
+            <a class="btn btn-primary" href="https://www.mercadopago.com.ar" target="_blank" rel="noopener">
+              <span class="icon">💳</span>
+              Pagar con Mercado Pago
+            </a>
+            <button class="btn btn-secondary" type="button" onclick="copiarAlias()">
+              <span class="icon">📋</span>
+              Copiar alias
+            </button>
+          </div>
+          <div class="hero-card-note">
+            Copiá el alias para evitar errores al enviar dinero. También podés usarlo para señas o pagos de
+            proyectos completos.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <h2>Servicios de JEAL Studio 3D</h2>
+      <p class="section-text">
+        Cada proyecto se trabaja como una pieza única: desde la idea hasta el archivo laminado listo para
+        imprimir, con foco en detalle, funcionalidad y estética.
+      </p>
+      <div class="chips">
+        <span class="chip">Impresión 3D FDM</span>
+        <span class="chip">Modelado paramétrico</span>
+        <span class="chip">Vectorización de logos</span>
+        <span class="chip">Placas QR para comercios</span>
+        <span class="chip">Llaveros y branding físico</span>
+        <span class="chip">Prototipos funcionales</span>
+      </div>
+      <div class="card-soft">
+        <strong>Ejemplos de proyectos:</strong><br />
+        · Placas QR doble cara para bares y cafeterías.<br />
+        · Logos 3D incrustados en bases personalizadas.<br />
+        · Llaveros con identidad de marca y cambio de color.<br />
+        · Piezas a medida para uso cotidiano o profesional.
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2>Trabajos y piezas</h2>
+      <p class="section-text">
+        Acá podés mostrar fotos reales de tus impresiones: placas QR, logos, llaveros, prototipos, etc.
+        Cuando tengas las imágenes listas, simplemente las agregás en esta sección.
+      </p>
+      <div class="card-soft">
+        <strong>Idea:</strong> usá esta sección como catálogo vivo. Cada foto puede ir acompañada de una breve
+        descripción: material, tiempo de impresión, uso, y si fue para un comercio, un amigo o un proyecto
+        personal.
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Precios orientativos</h2>
+      <div class="two-cols">
+        <div class="card-soft">
+          <strong>Impresión 3D (solo impresión)</strong><br />
+          · Piezas pequeñas: desde $10.000<br />
+          · Placas QR / logos: desde $15.000<br />
+          · Proyectos complejos o multicolor: a partir de $20.000<br /><br />
+          <span style="font-size:0.8rem;color:var(--text-muted);">
+            Los valores pueden variar según horas de impresión, cantidad de material, complejidad del modelo y
+            si incluye diseño/modelado.
+          </span>
+        </div>
+        <div class="card-soft">
+          <strong>Diseño y modelado</strong><br />
+          · Vectorización de logo: desde $10.000<br />
+          · Modelado 3D simple: desde $15.000<br />
+          · Placa QR + logo + composición: desde $25.000<br /><br />
+          <span style="font-size:0.8rem;color:var(--text-muted);">
+            Para amigos o proyectos especiales, podés aplicar “precio amigo”, pero siempre partiendo de un
+            valor profesional.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section id="origin">
+      <h2>El origen de JEAL Studio</h2>
+      <div class="two-cols">
+        <div class="section-text">
+          JEAL Studio 3D nace como un proyecto personal, mezclando diseño, tecnología y ganas de llevar ideas
+          al mundo físico. El logo original fue diseñado por tu hermana, y forma parte de la historia del
+          estudio.<br /><br />
+          Cuando tengas el archivo del logo clásico, simplemente lo reemplazás en esta sección para que quede
+          integrado como parte de la identidad.
+        </div>
+        <div class="logo-classic-box">
+          <div class="logo-classic-mark">Logo clásico</div>
+          <div class="logo-classic-placeholder">
+            JEAL Classic
+            <span>(placeholder)</span>
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">
+            Acá va el logo original diseñado por tu hermana. Cuando lo tengas, lo reemplazamos por la imagen
+            real.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contacto</h2>
+      <p class="section-text">
+        Si querés hacer un pedido, pedir un presupuesto o simplemente ver qué se puede hacer con impresión 3D,
+        podés escribir directamente.
+      </p>
+      <div class="chips">
+        <!-- REEMPLAZÁ EL TELÉFONO POR EL TUYO -->
+        <a class="chip" href="https://wa.me/5491112345678?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20un%20proyecto%203D." target="_blank" rel="noopener">
+          WhatsApp · JEAL Studio
+        </a>
+        <a class="chip" href="mailto:jonatanlandeira@gmail.com">
+          jonatanlandeira@gmail.com
+        </a>
+        <!-- REEMPLAZÁ POR TU INSTAGRAM REAL -->
+        <a class="chip" href="https://instagram.com" target="_blank" rel="noopener">
+          Instagram · @jealstudio3d
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>JEAL Studio 3D · Muestra interactiva</div>
+    <div>
+      Código alojado en GitHub Pages ·
+      <a class="link" href="https://jeal-023.github.io/QR/" target="_blank" rel="noopener">Ver versión online</a>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast">Alias copiado: Miviajealespacio</div>
+
+  <script>
+    function copiarAlias() {
+      const alias = "Miviajealespacio";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(alias).then(mostrarToast).catch(function () {
+          fallbackCopy(alias);
+        });
+      } else {
+        fallbackCopy(alias);
+      }
+    }
+
+    function fallbackCopy(texto) {
+      const temp = document.createElement("textarea");
+      temp.value = texto;
+      temp.style.position = "fixed";
+      temp.style.left = "-9999px";
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand("copy");
+      } catch (e) {}
+      document.body.removeChild(temp);
+      mostrarToast();
+    }
+
+    function mostrarToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+  </script>
 </body>
 </html>
