@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>JEAL Studio · Hub</title>
+<title>JEAL Studio · Diseño & Impresión 3D</title>
 
 <style>
   :root {
+    --bg: #0b0a0f;
+    --fg: #ffffff;
+    --muted: #b8b8c9;
     --violet: #9b5bff;
-    --violet-light: #c7a3ff;
+    --violet-soft: #c7a3ff;
     --pink: #ff4fd8;
-    --bg: #05030a;
-    --text: #f5f5ff;
-    --muted: #b8b8d9;
   }
 
   * {
@@ -23,222 +23,224 @@
   }
 
   body {
-    background: radial-gradient(circle at top, #1a1030, #05030a 60%);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 16px;
+    background: var(--bg);
+    color: var(--fg);
     overflow-x: hidden;
   }
 
-  /* Fondo animado */
-  .orb {
+  /* Fondo suave */
+  .bg {
     position: fixed;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.35;
-    z-index: -2;
-    animation: float 18s ease-in-out infinite alternate;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(circle at top, #1a1030, #0b0a0f 70%);
   }
 
-  .orb.violet { background: #7a3bff; top: -80px; left: -60px; }
-  .orb.pink { background: #ff2fb0; bottom: -120px; right: -40px; animation-delay: 4s; }
-
-  @keyframes float {
-    0% { transform: translate(0,0) scale(1); }
-    100% { transform: translate(20px,-30px) scale(1.05); }
-  }
-
-  /* Logo */
-  .logo {
+  /* Hero */
+  .hero {
+    padding: 80px 20px 60px;
     text-align: center;
-    margin-bottom: 40px;
+    max-width: 900px;
+    margin: auto;
   }
 
-  .logo-title {
-    font-size: 2.2rem;
+  .hero-title {
+    font-size: 3rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: linear-gradient(120deg, #fff, var(--violet-light), var(--pink));
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, #fff, var(--violet-soft), var(--pink));
     -webkit-background-clip: text;
     color: transparent;
-    text-shadow: 0 0 18px rgba(155, 91, 255, 0.4);
   }
 
-  .logo-sub {
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
+  .hero-sub {
+    margin-top: 16px;
+    font-size: 1.2rem;
     color: var(--muted);
-    margin-top: 6px;
   }
 
-  /* Botones */
-  .hub {
-    width: 100%;
-    max-width: 420px;
+  .hero-buttons {
+    margin-top: 32px;
     display: flex;
-    flex-direction: column;
-    gap: 18px;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
   }
 
   .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    border-radius: 14px;
+    padding: 14px 26px;
+    border-radius: 12px;
     text-decoration: none;
-    color: var(--text);
-    font-size: 1rem;
+    color: var(--fg);
     font-weight: 600;
-    border: 1px solid rgba(155, 91, 255, 0.6);
-    background: rgba(20, 10, 40, 0.6);
-    backdrop-filter: blur(6px);
-    box-shadow: 0 0 14px rgba(155, 91, 255, 0.35);
-    transition: 0.15s ease-out;
+    border: 1px solid rgba(155, 91, 255, 0.4);
+    background: rgba(255,255,255,0.03);
+    transition: 0.2s ease-out;
   }
 
   .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 22px rgba(255, 79, 216, 0.55);
-    border-color: var(--pink);
+    border-color: var(--violet);
+    background: rgba(155, 91, 255, 0.15);
   }
 
-  .btn span {
-    margin-right: 10px;
-    font-size: 1.3rem;
+  /* Secciones */
+  section {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
   }
 
-  /* Alias */
-  .alias-box {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: var(--muted);
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    font-weight: 600;
   }
 
-  .alias {
-    font-family: monospace;
-    font-size: 1rem;
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(155, 91, 255, 0.5);
-    display: inline-block;
-    margin-bottom: 10px;
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
   }
 
-  /* Logo Classic */
-  .classic {
-    margin-top: 40px;
-    text-align: center;
-    opacity: 0.7;
-  }
-
-  .classic-box {
-    display: inline-block;
-    padding: 10px 16px;
-    border-radius: 12px;
-    border: 1px dashed rgba(155, 91, 255, 0.5);
+  .card {
+    padding: 24px;
+    border-radius: 16px;
     background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(155, 91, 255, 0.25);
+    text-align: center;
+    transition: 0.2s ease-out;
+  }
+
+  .card:hover {
+    border-color: var(--violet);
+    background: rgba(155, 91, 255, 0.1);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
     font-size: 0.9rem;
   }
 
-  /* Toast */
-  #toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20, 10, 40, 0.9);
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--violet);
-    color: var(--text);
-    opacity: 0;
-    transition: 0.2s ease-out;
-    pointer-events: none;
+  .footer-links {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
   }
 
-  #toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-6px);
+  .footer-links a {
+    color: var(--violet-soft);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
 
 <body>
 
-<div class="orb violet"></div>
-<div class="orb pink"></div>
+<div class="bg"></div>
 
-<div class="logo">
-  <div class="logo-title">JEAL Studio</div>
-  <div class="logo-sub">Hub Principal</div>
-</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-title">JEAL Studio</div>
+  <div class="hero-sub">Diseño · Modelado · Impresión 3D · Placas QR</div>
 
-<div class="hub">
-
-  <!-- WhatsApp -->
-  <a class="btn" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank">
-    <span>💬</span> Hacer un pedido
-  </a>
-
-  <!-- Alias -->
-  <a class="btn" href="#" onclick="copiarAlias()">
-    <span>📋</span> Copiar alias de pago
-  </a>
-
-  <!-- Instagram -->
-  <a class="btn" href="https://instagram.com" target="_blank">
-    <span>📸</span> Instagram
-  </a>
-
-  <!-- Portfolio -->
-  <a class="btn" href="#portfolio">
-    <span>🧩</span> Portfolio
-  </a>
-
-  <!-- Ubicación -->
-  <a class="btn" href="https://maps.google.com" target="_blank">
-    <span>📍</span> Ubicación
-  </a>
-
-  <!-- Página completa (futuro) -->
-  <a class="btn" href="#" onclick="alert('Pronto: Landing completa de JEAL Studio')">
-    <span>🌐</span> Página completa
-  </a>
-
-</div>
-
-<div class="alias-box">
-  <div class="alias">Miviajealespacio</div><br>
-  Alias para pagos en Mercado Pago
-</div>
-
-<div class="classic">
-  <div class="classic-box">
-    JEAL Classic (placeholder)
+  <div class="hero-buttons">
+    <a class="btn" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank">
+      Hacer un pedido
+    </a>
+    <a class="btn" href="/hub/">
+      Ir al Hub
+    </a>
   </div>
 </div>
 
-<div id="toast">Alias copiado</div>
+<!-- SERVICIOS -->
+<section>
+  <h2>Qué hago</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      Impresión 3D
+      <div class="muted">Piezas funcionales, logos, llaveros, prototipos.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📐</div>
+      Modelado 3D
+      <div class="muted">Diseño paramétrico y vectorización.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      Placas QR
+      <div class="muted">QR funcionales, logos integrados y estética premium.</div>
+    </div>
+  </div>
+</section>
 
-<script>
-function copiarAlias() {
-  const alias = "Miviajealespacio";
-  navigator.clipboard.writeText(alias).then(() => {
-    const t = document.getElementById("toast");
-    t.classList.add("show");
-    setTimeout(() => t.classList.remove("show"), 1800);
-  });
-}
-</script>
+<!-- PORTFOLIO -->
+<section>
+  <h2>Portfolio</h2>
+  <div class="muted">Pronto vas a poder ver acá tus trabajos reales.</div>
+</section>
+
+<!-- PRECIOS -->
+<section>
+  <h2>Precios orientativos</h2>
+  <div class="cards">
+    <div class="card">
+      <strong>Impresión 3D</strong><br><br>
+      <div class="muted">
+        Piezas pequeñas: desde $10.000<br>
+        Placas QR: desde $15.000<br>
+        Multicolor: desde $20.000
+      </div>
+    </div>
+    <div class="card">
+      <strong>Diseño & Modelado</strong><br><br>
+      <div class="muted">
+        Vectorización: desde $10.000<br>
+        Modelado simple: desde $15.000<br>
+        Placa QR completa: desde $25.000
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section>
+  <h2>Sobre JEAL Studio</h2>
+  <div class="muted">
+    Un proyecto personal que combina diseño, tecnología y creatividad para llevar ideas al mundo físico.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  JEAL Studio · 2026
+  <div class="footer-links">
+    <a href="https://wa.me/5491161067544" target="_blank">WhatsApp</a>
+    <a href="https://instagram.com" target="_blank">Instagram</a>
+    <a href="mailto:jonatanlandeira@gmail.com">Email</a>
+  </div>
+</footer>
 
 </body>
 </html>
