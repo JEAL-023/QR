@@ -99,7 +99,6 @@
       margin: 18px 0 20px;
     }
 
-    /* ANIMACIÓN DE BOTONES */
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.015); }
@@ -107,7 +106,10 @@
     }
 
     .btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
       padding: 12px 14px;
       border-radius: 999px;
@@ -195,13 +197,31 @@
     <div class="divider"></div>
 
     <div class="buttons">
-      <a class="btn btn-primary" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20Quiero%20hacer%20un%20pedido." target="_blank">Pedir por WhatsApp</a>
 
-      <a class="btn" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20¿Me%20pasás%20el%20menú%20completo?" target="_blank">Ver menú</a>
+      <a class="btn btn-primary" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20Quiero%20hacer%20un%20pedido." target="_blank">
+        Pedir por WhatsApp
+      </a>
 
-      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=General+Manuel+Belgrano+414+Moreno" target="_blank">Cómo llegar</a>
+      <a class="btn" href="https://wa.me/5491170646339?text=Hola%20SKÅL!%20¿Me%20pasás%20el%20menú%20completo?" target="_blank">
+        Ver menú
+      </a>
 
-      <a class="btn" href="tel:+5491170646339">Llamar</a>
+      <a class="btn" href="https://www.google.com/maps/search/?api=1&query=General+Manuel+Belgrano+414+Moreno" target="_blank">
+        Cómo llegar
+      </a>
+
+      <a class="btn" href="tel:+5491170646339">
+        Llamar
+      </a>
+
+      <!-- INSTAGRAM — TOTALMENTE INTEGRADO AL ESTILO -->
+      <a class="btn" href="https://www.instagram.com/skal.pizzas.bar/" target="_blank">
+        <svg width="20" height="20" fill="var(--dorado)" viewBox="0 0 24 24">
+          <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-3a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+        </svg>
+        Instagram
+      </a>
+
     </div>
 
     <div class="divider"></div>
@@ -251,13 +271,13 @@
       const totalMin = hora * 60 + minutos;
 
       const horarios = {
-        1: [480, 1380],  // Lunes
-        2: [480, 1380],  // Martes
-        3: [480, 1380],  // Miércoles
-        4: [480, 1380],  // Jueves
-        5: [480, 1500],  // Viernes (08:00 → 01:00)
-        6: [480, 1500],  // Sábado (08:00 → 01:00)
-        0: [1140, 1380]  // Domingo (19:00 → 23:00)
+        1: [480, 1380],
+        2: [480, 1380],
+        3: [480, 1380],
+        4: [480, 1380],
+        5: [480, 1500],
+        6: [480, 1500],
+        0: [1140, 1380]
       };
 
       const rango = horarios[dia];
