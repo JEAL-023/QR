@@ -345,18 +345,25 @@
   .copy-btn.ok { border-color: var(--wa); background: rgba(37, 211, 102, 0.15); }
 
   /* ---------- Instagram ---------- */
+  .hero-insta {
+    max-width: 480px;
+    margin: 28px auto 0;
+    text-align: left;
+  }
+
   .insta-box {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--line);
     background: #fff;
   }
 
+  /* La altura se ajusta sola con lo que informa Instagram (ver script al final) */
   .insta-box iframe {
     display: block;
     width: 100%;
-    height: 560px;
+    height: 420px;
     border: none;
   }
 
@@ -502,6 +509,26 @@
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
         Pedir presupuesto
       </a>
+    </div>
+
+    <!-- INSTAGRAM -->
+    <div class="hero-insta" id="instagram">
+      <div class="insta-box">
+        <iframe id="insta-frame" src="https://www.instagram.com/jealstudio3d/embed" title="Últimas publicaciones de @jealstudio3d en Instagram" allowfullscreen></iframe>
+      </div>
+      <a class="insta" href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">
+        <span class="insta-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>
+        </span>
+        <span>
+          <strong>@jealstudio3d</strong>
+          <span class="muted">Mirá todos nuestros trabajos en Instagram</span>
+        </span>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="hero-buttons">
       <a class="btn" href="#qr-en-accion">Ver QR en acción</a>
     </div>
 
@@ -637,27 +664,6 @@
     </div>
   </section>
 
-  <!-- INSTAGRAM -->
-  <section id="instagram" class="wrap reveal">
-    <div class="section-head">
-      <h2>Mirá nuestros trabajos</h2>
-      <p>Subimos los pedidos terminados a Instagram.</p>
-    </div>
-    <div class="insta-box">
-      <iframe src="https://www.instagram.com/jealstudio3d/embed" title="Últimas publicaciones de @jealstudio3d en Instagram" loading="lazy" allowfullscreen></iframe>
-    </div>
-    <a class="insta" href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">
-      <span class="insta-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>
-      </span>
-      <span>
-        <strong>@jealstudio3d</strong>
-        <span class="muted">Seguinos para ver lo último que salió de la impresora</span>
-      </span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-  </section>
-
   <!-- PAGO -->
   <section id="pago" class="wrap reveal">
     <div class="pay">
@@ -717,6 +723,19 @@
       copyBtn.textContent = "Copiar alias";
       copyBtn.classList.remove("ok");
     }, 2000);
+  });
+
+  // Ajustar el recuadro de Instagram a su contenido, sin espacio en blanco
+  const instaFrame = document.getElementById("insta-frame");
+  window.addEventListener("message", (e) => {
+    let data = e.data;
+    try {
+      if (!/(^|\.)instagram\.com$/.test(new URL(e.origin).hostname)) return;
+      if (typeof data === "string") data = JSON.parse(data);
+    } catch (err) { return; }
+    if (data && data.type === "MEASURE" && data.details && data.details.height > 0) {
+      instaFrame.style.height = data.details.height + "px";
+    }
   });
 
   // Aparición suave de las secciones
