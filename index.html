@@ -1,61 +1,171 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>JEAL Studio · Diseño & Impresión 3D</title>
+<title>JEAL Studio · Diseño e Impresión 3D</title>
+<meta name="description" content="JEAL Studio: diseño, modelado e impresión 3D a pedido. Llaveros, logos, placas QR, piezas funcionales y prototipos. Pedí tu presupuesto por WhatsApp." />
+<meta name="theme-color" content="#0b0a0f" />
+
+<!-- Vista previa al compartir el link (WhatsApp, Instagram, etc.) -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="JEAL Studio · Diseño e Impresión 3D" />
+<meta property="og:description" content="Llaveros, logos, placas QR, piezas funcionales y prototipos a pedido. Pedí tu presupuesto por WhatsApp." />
+<meta property="og:url" content="https://jeal-023.github.io/QR/" />
+<meta property="og:locale" content="es_AR" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239b5bff'/%3E%3Cstop offset='1' stop-color='%23ff4fd8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%230b0a0f'/%3E%3Cpath d='M32 10 52 21v22L32 54 12 43V21z' fill='none' stroke='url(%23g)' stroke-width='5' stroke-linejoin='round'/%3E%3Cpath d='M12 21l20 11 20-11M32 32v22' fill='none' stroke='url(%23g)' stroke-width='5' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
 <style>
   :root {
     --bg: #0b0a0f;
+    --bg-2: #121019;
     --fg: #ffffff;
     --muted: #b8b8c9;
     --violet: #9b5bff;
     --violet-soft: #c7a3ff;
     --pink: #ff4fd8;
+    --line: rgba(155, 91, 255, 0.25);
+    --card: rgba(255, 255, 255, 0.035);
+    --wa: #25d366;
+    --radius: 18px;
   }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Inter", system-ui, sans-serif;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
 
   body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--fg);
+    line-height: 1.55;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
 
-  /* Fondo suave */
+  a { color: inherit; }
+
   .bg {
     position: fixed;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(circle at top, #1a1030, #0b0a0f 70%);
+    background:
+      radial-gradient(60% 45% at 50% 0%, rgba(155, 91, 255, 0.28), transparent 70%),
+      radial-gradient(40% 35% at 90% 30%, rgba(255, 79, 216, 0.12), transparent 70%),
+      var(--bg);
   }
 
-  /* Hero */
-  .hero {
-    padding: 80px 20px 60px;
-    text-align: center;
-    max-width: 900px;
-    margin: auto;
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Barra superior ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(11, 10, 15, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  .hero-title {
-    font-size: 3rem;
+  .topbar .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    background: linear-gradient(120deg, #fff, var(--violet-soft), var(--pink));
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .brand svg { width: 28px; height: 28px; }
+
+  .nav { display: flex; gap: 22px; }
+
+  .nav a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  .nav a:hover { color: var(--fg); }
+
+  /* ---------- Botones ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--fg);
+    cursor: pointer;
+    transition: transform 0.15s ease-out, background 0.2s, border-color 0.2s;
+  }
+
+  .btn:hover { border-color: var(--violet); background: rgba(155, 91, 255, 0.15); }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    border: none;
+    background: linear-gradient(120deg, var(--violet), var(--pink));
+    box-shadow: 0 8px 30px rgba(155, 91, 255, 0.35);
+  }
+
+  .btn-primary:hover { background: linear-gradient(120deg, #a86bff, #ff63dd); }
+
+  .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 72px 0 56px;
+    text-align: center;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(155, 91, 255, 0.08);
+    color: var(--violet-soft);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    background: linear-gradient(120deg, #fff 20%, var(--violet-soft), var(--pink));
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
   }
 
   .hero-sub {
-    margin-top: 16px;
-    font-size: 1.2rem;
+    margin: 18px auto 0;
+    max-width: 560px;
+    font-size: clamp(1.05rem, 2.6vw, 1.2rem);
     color: var(--muted);
   }
 
@@ -63,218 +173,568 @@
     margin-top: 32px;
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
-  .btn {
-    padding: 14px 26px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--fg);
-    font-weight: 600;
-    border: 1px solid rgba(155, 91, 255, 0.4);
-    background: rgba(255,255,255,0.03);
-    transition: 0.2s ease-out;
+  .hero-chips {
+    margin-top: 34px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
-  .btn:hover {
-    border-color: var(--violet);
-    background: rgba(155, 91, 255, 0.15);
+  .chip {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+    color: var(--muted);
   }
 
-  /* Secciones */
-  section {
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 0 20px;
-  }
+  /* ---------- Secciones ---------- */
+  section { padding: 44px 0; scroll-margin-top: 70px; }
+
+  .section-head { margin-bottom: 26px; }
 
   h2 {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-    font-weight: 600;
+    font-size: clamp(1.5rem, 4vw, 1.9rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
-  .cards {
+  .section-head p { color: var(--muted); margin-top: 6px; }
+
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
   }
 
   .card {
     padding: 24px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(155, 91, 255, 0.25);
-    text-align: center;
-    transition: 0.2s ease-out;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--line);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
   }
 
   .card:hover {
     border-color: var(--violet);
-    background: rgba(155, 91, 255, 0.1);
+    background: rgba(155, 91, 255, 0.08);
+    transform: translateY(-2px);
   }
 
   .card-icon {
-    font-size: 2rem;
-    margin-bottom: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, rgba(155, 91, 255, 0.25), rgba(255, 79, 216, 0.18));
+    margin-bottom: 16px;
   }
 
-  .muted {
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
+  .card h3 { font-size: 1.12rem; font-weight: 600; margin-bottom: 6px; }
 
-  /* Instagram preview */
-  .insta-box {
-    margin-top: 20px;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(155, 91, 255, 0.25);
-  }
+  .muted { color: var(--muted); font-size: 0.95rem; }
 
-  iframe {
-    width: 100%;
-    height: 480px;
-    border: none;
-  }
-
-  /* Alias */
-  .alias-box {
-    margin-top: 20px;
-    text-align: center;
-  }
-
-  .alias {
-    font-family: monospace;
-    font-size: 1rem;
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(155, 91, 255, 0.5);
-    display: inline-block;
-    margin-bottom: 10px;
-  }
-
-  /* Footer */
-  footer {
-    margin-top: 80px;
-    padding: 40px 20px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .footer-links {
-    margin-top: 16px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .footer-links a {
+  .card-link {
+    margin-top: auto;
+    padding-top: 16px;
     color: var(--violet-soft);
+    font-weight: 600;
+    font-size: 0.92rem;
     text-decoration: none;
   }
 
-  .footer-links a:hover {
-    text-decoration: underline;
+  .card-link:hover { text-decoration: underline; }
+
+  /* ---------- Pasos ---------- */
+  .steps { counter-reset: paso; }
+
+  .step { position: relative; padding-top: 58px; }
+
+  .step::before {
+    counter-increment: paso;
+    content: counter(paso);
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: linear-gradient(120deg, var(--violet), var(--pink));
+  }
+
+  /* ---------- Precios ---------- */
+  .price-list { list-style: none; margin-top: 8px; }
+
+  .price-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    color: var(--muted);
+  }
+
+  .price-list li:last-child { border-bottom: none; }
+
+  .price-list strong { color: var(--fg); font-weight: 600; white-space: nowrap; }
+
+  .note {
+    margin-top: 18px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ---------- Materiales ---------- */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    background: rgba(155, 91, 255, 0.12);
+    color: var(--violet-soft);
+  }
+
+  /* ---------- Pago ---------- */
+  .pay {
+    text-align: center;
+    padding: 32px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(80% 120% at 50% 0%, rgba(155, 91, 255, 0.14), transparent 70%),
+      var(--card);
+  }
+
+  .alias-row {
+    margin: 16px auto 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .alias {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 1.15rem;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(155, 91, 255, 0.5);
+    user-select: all;
+  }
+
+  .copy-btn { padding: 10px 16px; font-size: 0.92rem; }
+
+  .copy-btn.ok { border-color: var(--wa); background: rgba(37, 211, 102, 0.15); }
+
+  /* ---------- Instagram ---------- */
+  .insta-box {
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+
+  .insta-box iframe {
+    display: block;
+    width: 100%;
+    height: 560px;
+    border: none;
+  }
+
+  .insta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--card);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .insta:hover { border-color: var(--pink); background: rgba(255, 79, 216, 0.08); }
+
+  .insta-icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7);
+  }
+
+  .insta-icon svg { width: 30px; height: 30px; }
+
+  .insta strong { display: block; font-size: 1.1rem; }
+
+  .insta .arrow { margin-left: auto; font-size: 1.4rem; color: var(--muted); }
+
+  /* ---------- CTA final ---------- */
+  .cta {
+    text-align: center;
+    padding: 48px 24px;
+    border-radius: 24px;
+    background: linear-gradient(120deg, rgba(155, 91, 255, 0.22), rgba(255, 79, 216, 0.16));
+    border: 1px solid var(--line);
+  }
+
+  .cta p { color: var(--muted); margin: 10px auto 24px; max-width: 460px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    margin-top: 40px;
+    padding: 36px 20px 100px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-links {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a { color: var(--violet-soft); text-decoration: none; }
+  .footer-links a:hover { text-decoration: underline; }
+
+  /* ---------- Botón flotante de WhatsApp ---------- */
+  .wa-float {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 30;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--wa);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    transition: transform 0.15s;
+  }
+
+  .wa-float:hover { transform: scale(1.06); }
+  .wa-float svg { width: 32px; height: 32px; }
+
+  /* ---------- Animación de entrada ---------- */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .card, .btn, .wa-float { transition: none; }
+  }
+
+  @media (max-width: 640px) {
+    .nav { display: none; }
+    .hero { padding: 52px 0 40px; }
+    .hero-buttons .btn { width: 100%; }
+    section { padding: 34px 0; }
   }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<div class="bg" aria-hidden="true"></div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-title">JEAL Studio</div>
-  <div class="hero-sub">Diseño · Modelado · Impresión 3D · Placas QR</div>
-
-  <div class="hero-buttons">
-    <a class="btn" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank">
-      Hacer un pedido
+<!-- BARRA SUPERIOR -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="JEAL Studio, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#9b5bff" />
+            <stop offset="1" stop-color="#ff4fd8" />
+          </linearGradient>
+        </defs>
+        <path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="none" stroke="url(#logo-g)" stroke-width="5" stroke-linejoin="round" />
+        <path d="M10 18.5 32 31l22-12.5M32 31v27" fill="none" stroke="url(#logo-g)" stroke-width="5" stroke-linejoin="round" />
+      </svg>
+      JEAL Studio
     </a>
-    <a class="btn" href="/hub/">
-      Ir al Hub
-    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#servicios">Servicios</a>
+      <a href="#como-pedir">Cómo pedir</a>
+      <a href="#precios">Precios</a>
+      <a href="#pago">Pago</a>
+    </nav>
   </div>
-</div>
+</header>
 
-<!-- SERVICIOS -->
-<section>
-  <h2>Qué hago</h2>
-  <div class="cards">
-    <div class="card">
-      <div class="card-icon">🧩</div>
-      Impresión 3D
-      <div class="muted">Piezas funcionales, logos, llaveros, prototipos.</div>
+<main id="inicio">
+
+  <!-- HERO -->
+  <div class="hero wrap">
+    <span class="badge">Impresión 3D a pedido</span>
+    <h1>JEAL Studio</h1>
+    <p class="hero-sub">Llevamos tu idea de la pantalla a la mano: diseñamos, modelamos e imprimimos en 3D piezas únicas, llaveros, logos y placas QR.</p>
+
+    <div class="hero-buttons">
+      <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
+        Pedir presupuesto
+      </a>
+      <a class="btn" href="#qr-en-accion">Ver QR en acción</a>
     </div>
-    <div class="card">
-      <div class="card-icon">📐</div>
-      Modelado 3D
-      <div class="muted">Diseño paramétrico y vectorización.</div>
-    </div>
-    <div class="card">
-      <div class="card-icon">🔗</div>
-      Placas QR
-      <div class="muted">QR funcionales, logos integrados y estética premium.</div>
+
+    <div class="hero-chips" aria-label="Destacados">
+      <span class="chip">🎨 Multicolor</span>
+      <span class="chip">📐 Diseño a medida</span>
+      <span class="chip">💳 Mercado Pago</span>
     </div>
   </div>
-</section>
 
-<!-- INSTAGRAM -->
-<section>
-  <h2>Instagram</h2>
-  <div class="insta-box">
-    <iframe src="https://www.instagram.com/jealstudio3d/embed" allowfullscreen></iframe>
-  </div>
-</section>
+  <!-- SERVICIOS -->
+  <section id="servicios" class="wrap reveal">
+    <div class="section-head">
+      <h2>Qué hacemos</h2>
+      <p>Si lo podés imaginar, lo charlamos. Tocá cualquier servicio para consultar directo por WhatsApp.</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🧩</div>
+        <h3>Impresión 3D</h3>
+        <p class="muted">Piezas funcionales, repuestos, prototipos y objetos decorativos, en uno o varios colores.</p>
+        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20una%20impresi%C3%B3n%203D." target="_blank" rel="noopener">Consultar →</a>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🔑</div>
+        <h3>Llaveros y logos</h3>
+        <p class="muted">Tu marca, tu nombre o el escudo de tu equipo convertidos en llaveros, carteles y souvenirs.</p>
+        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20llaveros%20o%20logos%20personalizados." target="_blank" rel="noopener">Consultar →</a>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🔗</div>
+        <h3>Placas QR</h3>
+        <p class="muted">Placas con QR funcional y tu logo integrado: para tu local, tu menú, tus redes o tu mascota.</p>
+        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20una%20placa%20QR." target="_blank" rel="noopener">Consultar →</a>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">📐</div>
+        <h3>Modelado 3D</h3>
+        <p class="muted">¿Tenés solo una foto, un dibujo o un logo? Lo vectorizamos y lo modelamos para que se pueda imprimir.</p>
+        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20necesito%20un%20dise%C3%B1o%20o%20modelado%203D." target="_blank" rel="noopener">Consultar →</a>
+      </article>
+    </div>
+  </section>
 
-<!-- PRECIOS -->
-<section>
-  <h2>Precios orientativos</h2>
-  <div class="cards">
-    <div class="card">
-      <strong>Impresión 3D</strong><br><br>
-      <div class="muted">
-        Piezas pequeñas: desde $10.000<br>
-        Placas QR: desde $15.000<br>
-        Multicolor: desde $20.000
+  <!-- QR EN ACCIÓN -->
+  <section id="qr-en-accion" class="wrap reveal">
+    <div class="section-head">
+      <h2>QR en acción</h2>
+      <p>Cada placa QR lleva a una página propia, diseñada por nosotros. Escaneás y aparece esto:</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🍕</div>
+        <h3>Para tu local</h3>
+        <p class="muted">Menú, horarios, si está abierto ahora, cómo llegar y pedidos por WhatsApp, todo en un escaneo.</p>
+        <a class="card-link" href="SKAL/" target="_blank" rel="noopener">Ver ejemplo: SKÅL Pizzería →</a>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🐶</div>
+        <h3>Para tu mascota</h3>
+        <p class="muted">Una chapita con QR que muestra la ficha de tu mascota y un botón para escribirte por WhatsApp si alguien la encuentra.</p>
+        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20una%20placa%20QR%20para%20mi%20mascota." target="_blank" rel="noopener">Quiero la de mi mascota →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- CÓMO PEDIR -->
+  <section id="como-pedir" class="wrap reveal">
+    <div class="section-head">
+      <h2>Cómo pedir</h2>
+      <p>Simple y por WhatsApp, sin vueltas.</p>
+    </div>
+    <div class="grid steps">
+      <div class="card step">
+        <h3>Contanos tu idea</h3>
+        <p class="muted">Mandanos por WhatsApp una foto, un dibujo, un logo o una referencia de lo que querés.</p>
+      </div>
+      <div class="card step">
+        <h3>Te pasamos el presupuesto</h3>
+        <p class="muted">Según tamaño, material y colores, te decimos el precio y el tiempo de entrega.</p>
+      </div>
+      <div class="card step">
+        <h3>Confirmás y lo imprimimos</h3>
+        <p class="muted">Pagás por Mercado Pago, lo fabricamos y coordinamos la entrega.</p>
       </div>
     </div>
-    <div class="card">
-      <strong>Diseño & Modelado</strong><br><br>
-      <div class="muted">
-        Vectorización: desde $10.000<br>
-        Modelado simple: desde $15.000<br>
-        Placa QR completa: desde $25.000
+  </section>
+
+  <!-- PRECIOS -->
+  <section id="precios" class="wrap reveal">
+    <div class="section-head">
+      <h2>Precios orientativos</h2>
+      <p>Para que tengas una idea antes de consultar.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Impresión 3D</h3>
+        <ul class="price-list">
+          <li>Piezas pequeñas <strong>desde $10.000</strong></li>
+          <li>Placas QR <strong>desde $15.000</strong></li>
+          <li>Multicolor <strong>desde $20.000</strong></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Diseño y modelado</h3>
+        <ul class="price-list">
+          <li>Vectorización <strong>desde $10.000</strong></li>
+          <li>Modelado simple <strong>desde $15.000</strong></li>
+          <li>Placa QR completa <strong>desde $25.000</strong></li>
+        </ul>
       </div>
     </div>
-  </div>
-</section>
+    <p class="note">El precio final depende del tamaño, el material, los colores y el tiempo de impresión.</p>
+  </section>
 
-<!-- ALIAS -->
-<section>
-  <h2>Alias de pago</h2>
-  <div class="alias-box">
-    <div class="alias">Miviajealespacio</div>
-    <div class="muted">Alias para pagos en Mercado Pago</div>
-  </div>
-</section>
+  <!-- MATERIALES -->
+  <section id="materiales" class="wrap reveal">
+    <div class="section-head">
+      <h2>Materiales</h2>
+      <p>Elegimos el material según para qué vas a usar la pieza.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>PLA</h3>
+        <p class="muted">Ideal para decoración, llaveros, logos y figuras. Buena terminación y muchos colores.</p>
+        <div class="tags"><span class="tag">Decoración</span><span class="tag">Llaveros</span><span class="tag">Multicolor</span></div>
+      </div>
+      <div class="card">
+        <h3>PETG</h3>
+        <p class="muted">Más resistente a golpes, al calor y a la intemperie. Para piezas que se usan todos los días.</p>
+        <div class="tags"><span class="tag">Piezas funcionales</span><span class="tag">Exterior</span><span class="tag">Durabilidad</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section id="instagram" class="wrap reveal">
+    <div class="section-head">
+      <h2>Mirá nuestros trabajos</h2>
+      <p>Subimos los pedidos terminados a Instagram.</p>
+    </div>
+    <div class="insta-box">
+      <iframe src="https://www.instagram.com/jealstudio3d/embed" title="Últimas publicaciones de @jealstudio3d en Instagram" loading="lazy" allowfullscreen></iframe>
+    </div>
+    <a class="insta" href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">
+      <span class="insta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>
+      </span>
+      <span>
+        <strong>@jealstudio3d</strong>
+        <span class="muted">Seguinos para ver lo último que salió de la impresora</span>
+      </span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <!-- PAGO -->
+  <section id="pago" class="wrap reveal">
+    <div class="pay">
+      <h2>Pagos por Mercado Pago</h2>
+      <p class="muted">Transferí a este alias y mandanos el comprobante por WhatsApp.</p>
+      <div class="alias-row">
+        <span class="alias" id="alias">Miviajealespacio</span>
+        <button class="btn copy-btn" id="copy-btn" type="button">Copiar alias</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="wrap reveal">
+    <div class="cta">
+      <h2>¿Tenés una idea?</h2>
+      <p>Escribinos y la hacemos realidad. Te respondemos con el presupuesto por WhatsApp.</p>
+      <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">Hacer mi pedido</a>
+    </div>
+  </section>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
-  JEAL Studio · 2026
+  JEAL Studio · Diseño e impresión 3D · 2026
   <div class="footer-links">
-    <a href="https://wa.me/5491161067544" target="_blank">WhatsApp</a>
-    <a href="https://instagram.com/jealstudio3d" target="_blank">Instagram</a>
+    <a href="https://wa.me/5491161067544" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">Instagram</a>
     <a href="mailto:jonatanlandeira@gmail.com">Email</a>
   </div>
 </footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<a class="wa-float" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
+</a>
+
+<script>
+  // Copiar alias
+  const copyBtn = document.getElementById("copy-btn");
+  copyBtn.addEventListener("click", async () => {
+    const alias = document.getElementById("alias").textContent.trim();
+    try {
+      await navigator.clipboard.writeText(alias);
+    } catch (e) {
+      const range = document.createRange();
+      range.selectNodeContents(document.getElementById("alias"));
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      document.execCommand("copy");
+    }
+    copyBtn.textContent = "¡Copiado!";
+    copyBtn.classList.add("ok");
+    setTimeout(() => {
+      copyBtn.textContent = "Copiar alias";
+      copyBtn.classList.remove("ok");
+    }, 2000);
+  });
+
+  // Aparición suave de las secciones
+  const items = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach((el) => io.observe(el));
+  } else {
+    items.forEach((el) => el.classList.add("visible"));
+  }
+</script>
 
 </body>
 </html>
