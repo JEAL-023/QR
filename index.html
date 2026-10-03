@@ -167,6 +167,16 @@
     color: transparent;
   }
 
+  /* El logo tiene fondo del mismo negro de la página; "lighten" lo funde con el brillo violeta */
+  .hero-logo {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+    mix-blend-mode: lighten;
+  }
+
   .hero-sub {
     margin: 18px auto 0;
     max-width: 560px;
@@ -431,6 +441,8 @@
     flex-wrap: wrap;
   }
 
+  .footer-hours { margin-top: 8px; font-size: 0.85rem; line-height: 1.6; }
+
   .footer-links a { color: var(--violet-soft); text-decoration: none; }
   .footer-links a:hover { text-decoration: underline; }
 
@@ -506,7 +518,7 @@
   <!-- HERO -->
   <div class="hero wrap">
     <span class="badge">Impresión 3D a pedido</span>
-    <h1>JEAL Studio</h1>
+    <h1><img class="hero-logo" src="img/logo.jpg" alt="JEAL' Studio 3D" width="900" height="531" /></h1>
     <p class="hero-sub">Llevamos tu idea de la pantalla a la mano: diseñamos, modelamos e imprimimos en 3D piezas únicas, llaveros, logos y placas QR.</p>
 
     <div class="hero-buttons">
@@ -617,7 +629,7 @@
       </div>
       <div class="card step">
         <h3>Confirmás y lo imprimimos</h3>
-        <p class="muted">Pagás por Mercado Pago, lo fabricamos y coordinamos la entrega.</p>
+        <p class="muted">Señás el 50% por Mercado Pago, lo fabricamos y abonás el resto al momento de la entrega.</p>
       </div>
     </div>
   </section>
@@ -694,10 +706,12 @@
 
 <!-- FOOTER -->
 <footer>
-  JEAL Studio · Diseño e impresión 3D · 2026
+  JEAL' Studio 3D · Diseño e impresión 3D · 2026
+  <div class="footer-hours">Atención: lunes a viernes de 9 a 19 h y sábados de 9 a 13 h<br />Mensajes automáticos las 24 h: escribinos cuando quieras</div>
   <div class="footer-links">
     <a href="https://wa.me/5491161067544" target="_blank" rel="noopener">WhatsApp</a>
     <a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.facebook.com/61594212595148" target="_blank" rel="noopener">Facebook</a>
     <a href="mailto:jonatanlandeira@gmail.com">Email</a>
   </div>
 </footer>
