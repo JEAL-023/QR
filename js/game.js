@@ -30,6 +30,8 @@
   var boardEl = document.getElementById("game-board");
   var boardScope = document.getElementById("game-board-scope");
   var elClaim = document.getElementById("game-claim");
+  var btnWeek = document.getElementById("rank-week");
+  var btnAll = document.getElementById("rank-all");
 
   // ---------- Resolución lógica (pixel-art) ----------
   var LH = 110;              // alto lógico (franja fina)
@@ -627,7 +629,8 @@
 
   // ---------- Ranking ----------
   var pendingScore = 0;
-  var topScore = 0;   // mejor puntaje del ranking (para saber si quedás #1)
+  var topScore = 0;   // mejor puntaje del ranking mostrado (para saber si quedás #1)
+  var boardMode = "week"; // "week" (de la semana, el que da el premio) | "all" (histórico)
   var LB_URL = window.JEAL_LB_URL || null;
   var LB_KEY = window.JEAL_LB_KEY || null;
 
@@ -651,17 +654,36 @@
     boardEl.innerHTML = html;
   }
 
+  // Inicio de la semana (lunes 00:00) en ISO, para el ranking "de la semana".
+  function weekStartISO() {
+    var d = new Date(); var back = (d.getDay() + 6) % 7; // días desde el lunes
+    d.setDate(d.getDate() - back); d.setHours(0, 0, 0, 0);
+    return d.toISOString();
+  }
+
   function fetchBoard() {
     if (LB_URL) {
       var h = { "Content-Type": "application/json" }; if (LB_KEY) { h.apikey = LB_KEY; h.Authorization = "Bearer " + LB_KEY; }
-      fetch(LB_URL + "?select=name,score&order=score.desc&limit=10", { headers: h })
+      var q = "?select=name,score&order=score.desc&limit=10";
+      if (boardMode === "week") q += "&created_at=gte." + encodeURIComponent(weekStartISO());
+      var label = boardMode === "week" ? "mundial · semana 🌎" : "mundial · histórico 🌎";
+      fetch(LB_URL + q, { headers: h })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
-        .then(function (d) { renderBoard(d, "mundial 🌎"); })
+        .then(function (d) { renderBoard(d, label); })
         .catch(function () { renderBoard(localBoard(), "local"); });
     } else {
       renderBoard(localBoard(), "local");
     }
   }
+
+  function setBoardMode(m) {
+    boardMode = m;
+    if (btnWeek) btnWeek.classList.toggle("active", m === "week");
+    if (btnAll) btnAll.classList.toggle("active", m === "all");
+    fetchBoard();
+  }
+  if (btnWeek) btnWeek.addEventListener("click", function () { setBoardMode("week"); });
+  if (btnAll) btnAll.addEventListener("click", function () { setBoardMode("all"); });
 
   function submitScore(name, sc) {
     saveLocal(name, sc);

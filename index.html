@@ -296,6 +296,9 @@
   .reward-teaser:hover { transform: translateY(-2px); border-color: var(--violet); background: linear-gradient(120deg, rgba(155,91,255,0.22), rgba(255,79,216,0.18)); }
   .reward-teaser .rt-arrow { animation: rtbob 1.6s ease-in-out infinite; }
   @keyframes rtbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+  .rank-tabs { display: flex; gap: 6px; margin: 8px 0 8px; }
+  .rank-tab { flex: 1; padding: 5px 0; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: var(--display); transition: background 0.2s, color 0.2s, border-color 0.2s; }
+  .rank-tab.active { background: linear-gradient(120deg, rgba(155,91,255,0.25), rgba(255,79,216,0.18)); color: #fff; border-color: var(--violet); }
   .rank-prize { margin-top: 12px; font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
   .rank-prize b { color: var(--violet-soft); }
   .game-claim { background: linear-gradient(120deg, rgba(255,211,77,0.14), rgba(255,79,216,0.12)); border: 1px solid rgba(255,211,77,0.42); border-radius: 12px; padding: 12px 14px; max-width: 430px; }
@@ -596,6 +599,10 @@
       </div>
       <aside class="game-rank">
         <h3>🏆 Ranking</h3>
+        <div class="rank-tabs">
+          <button id="rank-week" class="rank-tab active" type="button">Semana</button>
+          <button id="rank-all" class="rank-tab" type="button">Histórico</button>
+        </div>
         <div class="scope" id="game-board-scope">local</div>
         <ol id="game-board"></ol>
         <p class="rank-prize">El <b>#1 de la semana</b> se gana un cupón de JEAL' Studio 3D. 🎁</p>
@@ -827,7 +834,7 @@
   window.JEAL_LB_URL = "https://yeooahkzxdsjwcjkffea.supabase.co/rest/v1/jeal_game_scores";
   window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
 </script>
-<script src="js/game.js?v=7" defer></script>
+<script src="js/game.js?v=8" defer></script>
 
 </body>
 </html>
