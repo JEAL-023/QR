@@ -67,26 +67,43 @@
     e1: "#ff4d6d", e1dk: "#b01a3a", e2: "#43e06a", e2dk: "#1f8a3c",
     eEye: "#120018", hit: "#ffffff",
     hyd: "#ff3b3b", hydDk: "#a81414", hydHi: "#ff7a7a", hydCap: "#ffd34d",
+    shield: "#3fd0ff", shieldHi: "#bfefff",
+    pickW: "#ff9a3c", pickWHi: "#ffc27a", pickWDk: "#a85a12",
+    boss: "#b14dff", bossDk: "#5f1aa6", bossHi: "#d9a6ff", hpGood: "#43e06a",
+    heart: "#ff5a7a", heartDk: "#c01e44", heartHi: "#ffb3c4",
     text: "#f3eefb", shadow: "#00000055"
   };
 
   // ---------- Estado ----------
   var state = "menu"; // menu | playing | over
-  var player, bullets, enemies, parts, clouds, hydrants;
+  var player, bullets, enemies, parts, clouds, hydrants, pickups;
   var score, best, lives, dist, speed, spawnT, spawnEvery, invuln, muzzle, shakeT, hydT, hydEvery;
+  var weapon, shield, pickT, pickEvery, boss, nextBossScore, bossesKilled, bannerT, bannerTxt, heartT, heartEvery;
   var keys = {};
   var last = 0, acc = 0;
   var STEP = 1 / 60;
+  var MAX_LIVES = 5;
+
+  // Armas que se juntan con power-ups (y se pierden al perder una vida).
+  var WEAPONS = [
+    { shots: 1, spread: 0, cool: 0.16, pierce: 0, name: "Pistola" },
+    { shots: 2, spread: 3, cool: 0.14, pierce: 0, name: "Doble" },
+    { shots: 3, spread: 4, cool: 0.12, pierce: 0, name: "Triple" },
+    { shots: 3, spread: 4, cool: 0.10, pierce: 1, name: "Perforante" }
+  ];
 
   best = parseInt(localStorage.getItem("jeal_best") || "0", 10) || 0;
   if (elBest) elBest.textContent = best;
 
   function reset() {
     player = { x: 44, y: GROUND - 18, w: 12, h: 18, vy: 0, onGround: true, face: 1, walk: 0, cool: 0 };
-    bullets = []; enemies = []; parts = []; hydrants = [];
+    bullets = []; enemies = []; parts = []; hydrants = []; pickups = [];
     clouds = [];
     score = 0; dist = 0; speed = 70; spawnT = 0; spawnEvery = 1.25;
     hydT = 0; hydEvery = 3.2;
+    weapon = 0; shield = false; pickT = 0; pickEvery = 10;
+    boss = null; nextBossScore = 900; bossesKilled = 0; bannerT = 0; bannerTxt = "";
+    heartT = 0; heartEvery = 18;
     lives = 3; invuln = 0; muzzle = 0; shakeT = 0;
   }
 
@@ -98,8 +115,13 @@
   function fire() {
     if (state !== "playing") return;
     if (player.cool > 0) return;
-    player.cool = 0.16;
-    bullets.push({ x: player.x + player.w, y: player.y + 6, vx: 300, life: 1.2 });
+    var w = WEAPONS[weapon];
+    player.cool = w.cool;
+    var bx = player.x + player.w, by = player.y + 6;
+    for (var s = 0; s < w.shots; s++) {
+      var off2 = w.shots > 1 ? (s - (w.shots - 1) / 2) * w.spread : 0;
+      bullets.push({ x: bx, y: by + off2, vx: 300, life: 1.2, pierce: w.pierce });
+    }
     muzzle = 0.06; sfx("shoot");
   }
   function down(e) {
@@ -146,6 +168,8 @@
     else if (type === "shoot") { o.type = "square"; o.frequency.setValueAtTime(880, t); o.frequency.exponentialRampToValueAtTime(220, t + 0.09); g.gain.setValueAtTime(0.04, t); }
     else if (type === "kill") { o.type = "square"; o.frequency.setValueAtTime(200, t); o.frequency.exponentialRampToValueAtTime(500, t + 0.1); g.gain.setValueAtTime(0.05, t); }
     else if (type === "hurt") { o.type = "sawtooth"; o.frequency.setValueAtTime(220, t); o.frequency.exponentialRampToValueAtTime(70, t + 0.25); g.gain.setValueAtTime(0.07, t); }
+    else if (type === "power") { o.type = "square"; o.frequency.setValueAtTime(520, t); o.frequency.exponentialRampToValueAtTime(1040, t + 0.14); g.gain.setValueAtTime(0.05, t); }
+    else if (type === "boss") { o.type = "sawtooth"; o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(60, t + 0.22); g.gain.setValueAtTime(0.07, t); }
     g.gain.exponentialRampToValueAtTime(0.0001, t + 0.26);
     o.start(t); o.stop(t + 0.28);
   }
@@ -179,13 +203,38 @@
     hydrants.push({ x: LW + 12, y: GROUND - 16, w: 12, h: 16 });
   }
 
+  // Power-up flotante: mejora de arma o escudo. Se juntan tocándolos.
+  function spawnPickup() {
+    var opts = [];
+    if (weapon < WEAPONS.length - 1) { opts.push("weapon"); opts.push("weapon"); }
+    if (!shield) opts.push("shield");
+    if (!opts.length) return;         // ya tenés todo al máximo
+    var type = opts[(Math.random() * opts.length) | 0];
+    pickups.push({ x: LW + 12, y: GROUND - 30, w: 11, h: 11, type: type, t: Math.random() * 6 });
+  }
+
+  // Jefe: aparece cada cierto puntaje, aguanta varios tiros y suelta un premio al caer.
+  function spawnBoss() {
+    var hp = 12 + bossesKilled * 5;
+    boss = { x: LW + 24, y: GROUND - 30, by: GROUND - 30, w: 26, h: 28, hp: hp, maxhp: hp, t: 0, hit: 0, phase: "enter" };
+    bannerT = 1.6; bannerTxt = "¡¡  JEFE  !!"; sfx("boss");
+  }
+
+  // Corazón: cada tanto, para recuperar una vida (solo si te falta alguna).
+  function spawnHeart() {
+    if (lives >= MAX_LIVES) return;
+    pickups.push({ x: LW + 12, y: GROUND - 32, w: 11, h: 11, type: "heart", t: Math.random() * 6 });
+  }
+
   function burst(x, y, c, n) {
     for (var i = 0; i < n; i++) parts.push({ x: x, y: y, vx: (Math.random() - 0.5) * 120, vy: (Math.random() - 0.7) * 120, life: 0.4 + Math.random() * 0.3, c: c });
   }
 
   function hurt() {
     if (invuln > 0) return;
+    if (shield) { shield = false; invuln = 1.0; shakeT = 0.2; sfx("hurt"); burst(player.x + 6, player.y + 8, COL.shield, 14); bannerT = 0.9; bannerTxt = "ESCUDO ROTO"; return; }
     lives--; invuln = 1.2; shakeT = 0.35; sfx("hurt");
+    weapon = 0;                                   // se pierde la mejora de arma al perder una vida
     burst(player.x + 6, player.y + 8, COL.e1, 10);
     if (lives <= 0) gameOver();
   }
@@ -196,6 +245,7 @@
     speed = 70 + Math.min(150, dist * 0.02);
     spawnEvery = Math.max(0.45, 1.25 - dist * 0.00008);
     hydEvery = Math.max(1.8, 3.2 - dist * 0.00012);
+    if (bannerT > 0) bannerT -= dt;
 
     // jugador
     var mv = 0; if (keys.left) mv -= 1; if (keys.right) mv += 1;
@@ -217,7 +267,7 @@
 
     // HIDRANTES (obstáculos rojos que BLOQUEAN las balas => obligan a saltar)
     hydT += dt;
-    if (hydT >= hydEvery) { hydT = 0; spawnHydrant(); }
+    if (hydT >= hydEvery && !boss) { hydT = 0; spawnHydrant(); }
     for (var hh = hydrants.length - 1; hh >= 0; hh--) {
       var hy = hydrants[hh];
       hy.x -= speed * dt;
@@ -239,7 +289,7 @@
 
     // enemigos
     spawnT += dt;
-    if (spawnT >= spawnEvery) { spawnT = 0; spawnEnemy(); if (Math.random() < 0.18 && dist > 400) spawnEnemy(); }
+    if (spawnT >= spawnEvery && !boss) { spawnT = 0; spawnEnemy(); if (Math.random() < 0.18 && dist > 400) spawnEnemy(); }
     for (var j = enemies.length - 1; j >= 0; j--) {
       var e = enemies[j];
       if (e.hit > 0) e.hit -= dt;
@@ -251,7 +301,7 @@
       for (var k = bullets.length - 1; k >= 0; k--) {
         var bu = bullets[k];
         if (bu.x > e.x && bu.x < e.x + e.w && bu.y > e.y - 2 && bu.y < e.y + e.h + 2) {
-          bullets.splice(k, 1);
+          if (!bu.pierce) bullets.splice(k, 1);
           e.dead = 1; e.deadT = 0; e.vx *= 0.3;
           score += 25; sfx("kill");
           burst(e.x + e.w / 2, e.y + e.h / 2, e.type === 2 ? COL.e2 : COL.e1, 8);
@@ -264,6 +314,58 @@
           e.y < player.y + player.h - 1 && e.y + e.h > player.y + 1) {
         hurt(); e.dead = 1; e.deadT = 0;
         burst(e.x + e.w / 2, e.y + e.h / 2, COL.e1, 6);
+      }
+    }
+
+    // POWER-UPS (escudo y mejoras de arma; se juntan tocándolos)
+    pickT += dt;
+    if (pickT >= pickEvery) { pickT = 0; spawnPickup(); }
+    heartT += dt;
+    if (heartT >= heartEvery) { heartT = 0; spawnHeart(); }
+    for (var pk = pickups.length - 1; pk >= 0; pk--) {
+      var it = pickups[pk]; it.t += dt * 3; it.x -= speed * dt;
+      var iy = it.y + Math.sin(it.t) * 3;
+      if (it.x < -16) { pickups.splice(pk, 1); continue; }
+      if (it.x < player.x + player.w && it.x + it.w > player.x && iy < player.y + player.h && iy + it.h > player.y) {
+        pickups.splice(pk, 1); sfx("power");
+        if (it.type === "weapon") { weapon = Math.min(WEAPONS.length - 1, weapon + 1); bannerT = 1.2; bannerTxt = "ARMA: " + WEAPONS[weapon].name.toUpperCase(); burst(it.x + 5, iy + 5, COL.pickW, 10); }
+        else if (it.type === "heart") { lives = Math.min(MAX_LIVES, lives + 1); bannerT = 1.2; bannerTxt = "¡+1 VIDA!"; burst(it.x + 5, iy + 5, COL.heart, 12); }
+        else { shield = true; bannerT = 1.2; bannerTxt = "¡ESCUDO!"; burst(it.x + 5, iy + 5, COL.shield, 10); }
+      }
+    }
+
+    // JEFE (aparece cada cierto puntaje)
+    if (!boss && score >= nextBossScore) spawnBoss();
+    if (boss) {
+      boss.t += dt; if (boss.hit > 0) boss.hit -= dt;
+      if (boss.phase === "enter") {
+        boss.x -= 52 * dt;
+        if (boss.x <= LW * 0.6) { boss.x = LW * 0.6; boss.phase = "fight"; }
+      } else {
+        boss.y = boss.by + Math.sin(boss.t * 1.6) * 6;
+        boss.x += Math.sin(boss.t * 0.8) * 22 * dt;
+        if (boss.x > LW * 0.66) boss.x = LW * 0.66;
+        if (boss.x < LW * 0.5) boss.x = LW * 0.5;
+      }
+      for (var bk = bullets.length - 1; bk >= 0; bk--) {
+        var bo = bullets[bk];
+        if (bo.x > boss.x && bo.x < boss.x + boss.w && bo.y > boss.y && bo.y < boss.y + boss.h) {
+          if (!bo.pierce) bullets.splice(bk, 1);
+          boss.hp--; boss.hit = 0.07; score += 5;
+          burst(bo.x, bo.y, COL.boss, 3);
+          if (boss.hp <= 0) {
+            bossesKilled++; score += 300; sfx("kill");
+            burst(boss.x + boss.w / 2, boss.y + boss.h / 2, COL.boss, 26);
+            pickups.push({ x: boss.x, y: GROUND - 30, w: 11, h: 11, type: (weapon < WEAPONS.length - 1 ? "weapon" : "shield"), t: 0 });
+            nextBossScore += 1100 + bossesKilled * 500;
+            bannerT = 1.8; bannerTxt = "¡JEFE DERROTADO!";
+            boss = null; break;
+          }
+        }
+      }
+      if (boss && invuln <= 0 && boss.x < player.x + player.w - 2 && boss.x + boss.w > player.x + 2 &&
+          boss.y < player.y + player.h - 1 && boss.y + boss.h > player.y + 1) {
+        hurt();
       }
     }
 
@@ -382,21 +484,82 @@
     px(x + 5, y + 8, 2, 2, COL.hydDk);       // tuerca central
   }
 
+  function drawPickup(it) {
+    var x = it.x | 0, y = (it.y + Math.sin(it.t) * 3) | 0;
+    if (it.type === "weapon") {
+      px(x, y, 11, 11, COL.pickWDk); px(x + 1, y + 1, 9, 9, COL.pickW);
+      px(x + 1, y + 1, 9, 1, COL.pickWHi); px(x + 1, y + 1, 1, 9, COL.pickWHi);
+      px(x + 5, y + 3, 1, 6, "#2a1200"); px(x + 4, y + 4, 3, 1, "#2a1200"); px(x + 3, y + 5, 5, 1, "#2a1200"); // flecha ↑
+    } else if (it.type === "shield") {
+      px(x + 3, y, 5, 1, COL.shield); px(x + 1, y + 1, 9, 2, COL.shield); px(x, y + 3, 11, 4, COL.shield);
+      px(x + 1, y + 7, 9, 2, COL.shield); px(x + 3, y + 9, 5, 1, COL.shield);
+      px(x + 2, y + 2, 2, 2, COL.shieldHi); px(x + 4, y + 3, 3, 4, "#0a2a44"); // orbe-escudo
+    } else {
+      // corazón (recupera vida)
+      px(x + 2, y + 1, 2, 2, COL.heart); px(x + 6, y + 1, 2, 2, COL.heart);
+      px(x + 1, y + 3, 9, 3, COL.heart); px(x + 2, y + 6, 7, 1, COL.heart);
+      px(x + 3, y + 7, 5, 1, COL.heart); px(x + 4, y + 8, 3, 1, COL.heart); px(x + 5, y + 9, 1, 1, COL.heartDk);
+      px(x + 2, y + 2, 2, 1, COL.heartHi); px(x + 6, y + 2, 1, 1, COL.heartHi);
+    }
+  }
+
+  function drawBoss() {
+    var x = boss.x | 0, y = boss.y | 0, fl = boss.hit > 0;
+    var c = fl ? COL.hit : COL.boss, dk = fl ? COL.hit : COL.bossDk, hi = fl ? COL.hit : COL.bossHi;
+    px(x + 2, y, 3, 4, dk); px(x + 21, y, 3, 4, dk);                 // cuernos
+    px(x + 2, y + 3, 22, 22, c); px(x + 2, y + 19, 22, 6, dk); px(x + 2, y + 3, 22, 1, hi);
+    px(x, y + 8, 2, 12, dk); px(x + 24, y + 8, 2, 12, dk);
+    px(x + 6, y + 9, 5, 4, COL.eEye); px(x + 15, y + 9, 5, 4, COL.eEye);       // ojos
+    px(x + 7, y + 10, 2, 2, "#ff3b3b"); px(x + 16, y + 10, 2, 2, "#ff3b3b");   // pupilas
+    px(x + 7, y + 18, 12, 2, COL.eEye);                                        // boca
+    px(x + 9, y + 18, 1, 2, c); px(x + 12, y + 18, 1, 2, c); px(x + 15, y + 18, 1, 2, c); // dientes
+    // barra de vida sobre el jefe
+    var bw = boss.w, bb = y - 5;
+    px(x, bb, bw, 3, COL.bossDk);
+    px(x, bb, Math.max(0, Math.round(bw * boss.hp / boss.maxhp)), 3, COL.hpGood);
+  }
+
   function drawFrame() {
     drawBG();
     // hidrantes (obstáculos en el piso)
     for (var hd = 0; hd < hydrants.length; hd++) drawHydrant(hydrants[hd]);
+    // power-ups
+    for (var pd = 0; pd < pickups.length; pd++) drawPickup(pickups[pd]);
     // balas
-    for (var i = 0; i < bullets.length; i++) { var b = bullets[i]; px(b.x, b.y, 4, 2, COL.bullet); px(b.x - 2, b.y, 2, 1, COL.bulletHot); }
+    for (var i = 0; i < bullets.length; i++) { var b = bullets[i]; var bc = b.pierce ? COL.pickW : COL.bullet; px(b.x, b.y, 4, 2, bc); px(b.x - 2, b.y, 2, 1, COL.bulletHot); }
     // enemigos
     for (var j = 0; j < enemies.length; j++) drawEnemy(enemies[j]);
+    if (boss) drawBoss();
     // muzzle flash
     if (muzzle > 0) px(player.x + player.w + 2, player.y + 5, 3, 3, COL.bulletHot);
     // jugador (parpadea si invulnerable)
     if (player && !(invuln > 0 && Math.floor(invuln * 20) % 2)) drawCop(player.x, player.y, player.face, player.walk, invuln > 0 && Math.floor(invuln * 12) % 2 === 0 && invuln > 1);
+    // burbuja de escudo alrededor del policía
+    if (shield && player) {
+      octx.globalAlpha = 0.5 + Math.sin(dist * 0.4) * 0.18;
+      octx.strokeStyle = COL.shield;
+      octx.strokeRect(player.x - 2.5, player.y - 2.5, player.w + 5, player.h + 5);
+      octx.globalAlpha = 1;
+    }
     // partículas
     for (var p = 0; p < parts.length; p++) { var pa = parts[p]; octx.globalAlpha = Math.max(0, pa.life * 2.2); px(pa.x, pa.y, 2, 2, pa.c); }
     octx.globalAlpha = 1;
+
+    // indicador de arma (pips) + escudo, abajo-centro
+    if (state === "playing") {
+      var ip = weapon + 1, ix0 = (LW / 2 - (ip * 4) / 2) | 0;
+      for (var wp = 0; wp < ip; wp++) px(ix0 + wp * 4, LH - 5, 3, 2, COL.bullet);
+      if (shield) px((LW / 2 + (ip * 4) / 2 + 3) | 0, LH - 6, 3, 3, COL.shield);
+    }
+    // banner (jefe / power-up)
+    if (bannerT > 0 && bannerTxt) {
+      octx.globalAlpha = Math.min(1, bannerT * 2);
+      octx.font = "bold 9px 'Space Grotesk', system-ui, sans-serif"; octx.textAlign = "center";
+      var tw = octx.measureText(bannerTxt).width;
+      octx.fillStyle = "rgba(10,8,20,0.72)"; octx.fillRect((LW / 2 - tw / 2 - 5) | 0, 28, (tw + 10) | 0, 13);
+      octx.fillStyle = COL.text; octx.fillText(bannerTxt, LW / 2, 38);
+      octx.textAlign = "left"; octx.globalAlpha = 1;
+    }
 
     // blit al canvas real (con shake)
     var sx = 0, sy = 0;
@@ -407,8 +570,8 @@
 
   function renderLives() {
     if (!elLives) return;
-    var s = "";
-    for (var i = 0; i < 3; i++) s += i < lives ? "▮" : "▯";
+    var total = Math.max(3, lives), s = "";
+    for (var i = 0; i < total; i++) s += i < lives ? "▮" : "▯";
     elLives.textContent = s;
   }
 

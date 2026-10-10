@@ -276,7 +276,8 @@
   #game-start:hover, #game-ov-form button:hover { filter: brightness(1.08); }
   .game-controls { font-size: 0.75rem !important; color: var(--muted); opacity: 0.85; }
   .game-touch { position: absolute; bottom: 10px; left: 10px; right: 10px; display: none; justify-content: space-between; pointer-events: none; }
-  .game-touch button { pointer-events: auto; width: 72px; height: 46px; border-radius: 12px; border: 1px solid var(--line); background: rgba(10,8,20,0.62); color: #fff; font-family: var(--display); font-size: 0.82rem; font-weight: 600; }
+  .game-touch button { pointer-events: auto; width: 50px; height: 50px; border-radius: 50%; border: 3px solid rgba(124,26,42,0.82); background: rgba(244,238,232,0.26); color: #7c1a2a; font-family: var(--display); font-size: 1.35rem; font-weight: 800; display: grid; place-items: center; line-height: 1; box-shadow: 0 3px 10px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,255,255,0.5); -webkit-tap-highlight-color: transparent; user-select: none; }
+  .game-touch button:active { background: rgba(124,26,42,0.6); color: #fff; transform: scale(0.92); }
   .game-rank { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
   .game-rank h3 { font-family: var(--display); font-weight: 700; font-size: 0.98rem; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
   .game-rank .scope { font-size: 0.72rem; color: var(--violet-soft); margin-bottom: 10px; }
@@ -462,8 +463,8 @@
           <button id="game-mute" class="box" type="button" title="Silenciar">🔊</button>
         </div>
         <div class="game-touch">
-          <button id="game-bjump" type="button">SALTAR ⤒</button>
-          <button id="game-bfire" type="button">FUEGO •</button>
+          <button id="game-bjump" type="button" aria-label="Saltar" title="Saltar">S</button>
+          <button id="game-bfire" type="button" aria-label="Fuego" title="Fuego">F</button>
         </div>
         <div id="game-overlay" class="game-overlay show">
           <h3 id="game-ov-title">PATRULLA 3D</h3>
@@ -803,7 +804,7 @@
   window.JEAL_LB_URL = "https://yeooahkzxdsjwcjkffea.supabase.co/rest/v1/jeal_game_scores";
   window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
 </script>
-<script src="js/game.js?v=4" defer></script>
+<script src="js/game.js?v=6" defer></script>
 
 </body>
 </html>
