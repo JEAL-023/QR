@@ -622,7 +622,7 @@
   var boardMode = "week"; // "week" (de la semana, el que da el premio) | "all" (histórico)
   // Récord "de la casa": objetivo difícil (display, no va a la DB). Así no todos salen #1.
   // Tuneable: subí/bajá el score si queda muy fácil o muy difícil de superar.
-  var HOUSE = { name: "🤖 Comisario 3D", score: 5000, house: true };
+  var HOUSE = { name: "🤖 Comisario 3D", score: 15000, house: true };
   var LB_URL = window.JEAL_LB_URL || null;
   var LB_KEY = window.JEAL_LB_KEY || null;
 
