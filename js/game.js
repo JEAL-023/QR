@@ -66,13 +66,14 @@
     gun: "#2a2a35", bullet: "#ffe066", bulletHot: "#fff6c0",
     e1: "#ff4d6d", e1dk: "#b01a3a", e2: "#43e06a", e2dk: "#1f8a3c",
     eEye: "#120018", hit: "#ffffff",
+    hyd: "#ff3b3b", hydDk: "#a81414", hydHi: "#ff7a7a", hydCap: "#ffd34d",
     text: "#f3eefb", shadow: "#00000055"
   };
 
   // ---------- Estado ----------
   var state = "menu"; // menu | playing | over
-  var player, bullets, enemies, parts, clouds;
-  var score, best, lives, dist, speed, spawnT, spawnEvery, invuln, muzzle, shakeT;
+  var player, bullets, enemies, parts, clouds, hydrants;
+  var score, best, lives, dist, speed, spawnT, spawnEvery, invuln, muzzle, shakeT, hydT, hydEvery;
   var keys = {};
   var last = 0, acc = 0;
   var STEP = 1 / 60;
@@ -82,9 +83,10 @@
 
   function reset() {
     player = { x: 44, y: GROUND - 18, w: 12, h: 18, vy: 0, onGround: true, face: 1, walk: 0, cool: 0 };
-    bullets = []; enemies = []; parts = [];
+    bullets = []; enemies = []; parts = []; hydrants = [];
     clouds = [];
     score = 0; dist = 0; speed = 70; spawnT = 0; spawnEvery = 1.25;
+    hydT = 0; hydEvery = 3.2;
     lives = 3; invuln = 0; muzzle = 0; shakeT = 0;
   }
 
@@ -164,6 +166,19 @@
     }
   }
 
+  // ¿hay lugar libre cerca del borde derecho? (para no spawnear obstáculos imposibles encimados)
+  function rightClear(margin) {
+    for (var i = 0; i < hydrants.length; i++) if (hydrants[i].x > LW - margin) return false;
+    for (var j = 0; j < enemies.length; j++) if (!enemies[j].dead && enemies[j].type === 1 && enemies[j].x > LW - margin) return false;
+    return true;
+  }
+
+  // Hidrante rojo: obstáculo en el piso. BLOQUEA las balas (no se puede pasar disparando) => hay que SALTAR.
+  function spawnHydrant() {
+    if (!rightClear(70)) return;      // dejá aire entre obstáculos para que sea saltable
+    hydrants.push({ x: LW + 12, y: GROUND - 16, w: 12, h: 16 });
+  }
+
   function burst(x, y, c, n) {
     for (var i = 0; i < n; i++) parts.push({ x: x, y: y, vx: (Math.random() - 0.5) * 120, vy: (Math.random() - 0.7) * 120, life: 0.4 + Math.random() * 0.3, c: c });
   }
@@ -180,6 +195,7 @@
     score += dt * (6 + speed * 0.05);
     speed = 70 + Math.min(150, dist * 0.02);
     spawnEvery = Math.max(0.45, 1.25 - dist * 0.00008);
+    hydEvery = Math.max(1.8, 3.2 - dist * 0.00012);
 
     // jugador
     var mv = 0; if (keys.left) mv -= 1; if (keys.right) mv += 1;
@@ -197,6 +213,28 @@
     for (var i = bullets.length - 1; i >= 0; i--) {
       var b = bullets[i]; b.x += b.vx * dt; b.life -= dt;
       if (b.x > LW + 6 || b.life <= 0) bullets.splice(i, 1);
+    }
+
+    // HIDRANTES (obstáculos rojos que BLOQUEAN las balas => obligan a saltar)
+    hydT += dt;
+    if (hydT >= hydEvery) { hydT = 0; spawnHydrant(); }
+    for (var hh = hydrants.length - 1; hh >= 0; hh--) {
+      var hy = hydrants[hh];
+      hy.x -= speed * dt;
+      if (hy.x < -20) { hydrants.splice(hh, 1); continue; }
+      // las balas NO lo atraviesan: se absorben (no se puede ganar solo disparando)
+      for (var hb = bullets.length - 1; hb >= 0; hb--) {
+        var bh = bullets[hb];
+        if (bh.x + 4 > hy.x && bh.x < hy.x + hy.w && bh.y > hy.y - 2 && bh.y < hy.y + hy.h) {
+          bullets.splice(hb, 1);
+          parts.push({ x: hy.x, y: bh.y, vx: -(50 + Math.random() * 50), vy: -(20 + Math.random() * 40), life: 0.22, c: COL.bulletHot });
+        }
+      }
+      // si lo tocás (no saltaste) perdés una vida
+      if (hy.x < player.x + player.w - 2 && hy.x + hy.w > player.x + 2 &&
+          hy.y < player.y + player.h - 1 && hy.y + hy.h > player.y + 1) {
+        hurt();
+      }
     }
 
     // enemigos
@@ -330,8 +368,24 @@
     }
   }
 
+  function drawHydrant(hy) {
+    var x = hy.x | 0, y = hy.y | 0;
+    px(x + 1, y + 13, 10, 3, COL.hydDk);     // base
+    px(x + 3, y + 4, 6, 10, COL.hyd);        // cuerpo
+    px(x + 3, y + 4, 1, 10, COL.hydHi);      // brillo izquierdo
+    px(x + 8, y + 4, 1, 10, COL.hydDk);      // sombra derecha
+    px(x + 3, y + 1, 6, 3, COL.hyd);         // domo
+    px(x + 4, y, 4, 1, COL.hyd);
+    px(x + 5, y - 1, 2, 1, COL.hydCap);      // tapita dorada
+    px(x, y + 7, 3, 3, COL.hyd); px(x, y + 7, 1, 3, COL.hydHi);        // nozzle izq
+    px(x + 9, y + 7, 3, 3, COL.hyd); px(x + 11, y + 7, 1, 3, COL.hydDk); // nozzle der
+    px(x + 5, y + 8, 2, 2, COL.hydDk);       // tuerca central
+  }
+
   function drawFrame() {
     drawBG();
+    // hidrantes (obstáculos en el piso)
+    for (var hd = 0; hd < hydrants.length; hd++) drawHydrant(hydrants[hd]);
     // balas
     for (var i = 0; i < bullets.length; i++) { var b = bullets[i]; px(b.x, b.y, 4, 2, COL.bullet); px(b.x - 2, b.y, 2, 1, COL.bulletHot); }
     // enemigos
