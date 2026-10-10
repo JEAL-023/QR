@@ -609,21 +609,8 @@
     ovName.value = localStorage.getItem("jeal_name") || "";
     overlay.classList.add("show");
     pendingScore = fs;
-    // ¿Quedaste #1? -> mostrar "Reclamar premio" (validación por red social)
-    if (elClaim) {
-      if (fs > 0 && fs > topScore) {
-        var nm = localStorage.getItem("jeal_name") || "";
-        var waMsg = encodeURIComponent("¡Hola! Quedé #1 en Patrulla 3D" + (nm ? " (ranking: " + nm + ")" : "") + " y quiero reclamar mi cupón 🎁");
-        elClaim.innerHTML = '<button type="button" class="claim-x" aria-label="Cerrar" onclick="document.getElementById(\'game-claim\').hidden=true">✕</button>' +
-          '<h4>🏆 ¡Quedaste #1 del ranking!</h4>' +
-          '<p>Reclamá tu cupón escribiéndonos desde tu cuenta, así validamos que sos vos:</p>' +
-          '<div class="claim-btns">' +
-            '<a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">📷 Instagram</a>' +
-            '<a href="https://wa.me/5491161067544?text=' + waMsg + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
-          '</div>';
-        elClaim.hidden = false;
-      } else { elClaim.hidden = true; }
-    }
+    // Sin cartel de "ganaste" en el momento: el #1 es SEMANAL (se define a fin de semana).
+    if (elClaim) elClaim.hidden = true;
     drawFrame();
   }
 
@@ -631,8 +618,11 @@
 
   // ---------- Ranking ----------
   var pendingScore = 0;
-  var topScore = 0;   // mejor puntaje del ranking mostrado (para saber si quedás #1)
+  var topScore = 0;   // mejor puntaje del ranking mostrado
   var boardMode = "week"; // "week" (de la semana, el que da el premio) | "all" (histórico)
+  // Récord "de la casa": objetivo difícil (display, no va a la DB). Así no todos salen #1.
+  // Tuneable: subí/bajá el score si queda muy fácil o muy difícil de superar.
+  var HOUSE = { name: "🤖 Comisario 3D", score: 5000, house: true };
   var LB_URL = window.JEAL_LB_URL || null;
   var LB_KEY = window.JEAL_LB_KEY || null;
 
@@ -645,13 +635,17 @@
   function renderBoard(list, scopeLabel) {
     if (!boardEl) return;
     if (boardScope) boardScope.textContent = scopeLabel;
-    topScore = (list && list.length) ? (list[0].score | 0) : 0;
-    if (!list || !list.length) { boardEl.innerHTML = '<li class="empty">Todavía no hay puntajes. ¡Sé el primero!</li>'; return; }
+    // Merge con el récord "de la casa" (siempre presente como objetivo).
+    var merged = (list || []).slice();
+    merged.push(HOUSE);
+    merged.sort(function (a, b) { return (b.score | 0) - (a.score | 0); });
+    merged = merged.slice(0, 10);
+    topScore = merged.length ? (merged[0].score | 0) : 0;
     var html = "";
-    for (var i = 0; i < Math.min(10, list.length); i++) {
-      var it = list[i];
-      var nm = (it.name || "???").toString().slice(0, 12).replace(/[<>&]/g, "");
-      html += '<li><span class="pos">' + (i + 1) + '</span><span class="nm">' + nm + '</span><span class="sc">' + (it.score | 0) + '</span></li>';
+    for (var i = 0; i < merged.length; i++) {
+      var it = merged[i];
+      var nm = (it.name || "???").toString().slice(0, 16).replace(/[<>&]/g, "");
+      html += '<li' + (it.house ? ' class="house"' : '') + '><span class="pos">' + (i + 1) + '</span><span class="nm">' + nm + '</span><span class="sc">' + (it.score | 0) + '</span></li>';
     }
     boardEl.innerHTML = html;
   }

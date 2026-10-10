@@ -289,6 +289,8 @@
   #game-board .nm { flex: 1; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #game-board .sc { color: var(--pink); font-weight: 700; font-family: var(--display); }
   #game-board .empty { color: var(--muted); font-size: 0.8rem; justify-content: center; border: none; }
+  #game-board li.house .nm { color: var(--violet-soft); font-style: italic; }
+  #game-board li.house .sc { color: var(--violet-soft); }
   #game { scroll-margin-top: 84px; }
   .reward-teaser-wrap { text-align: center; }
   .reward-teaser { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 999px; font-size: 0.98rem; font-weight: 600; text-decoration: none; color: var(--fg); background: linear-gradient(120deg, rgba(155,91,255,0.14), rgba(255,79,216,0.12)); border: 1px solid var(--line); transition: transform 0.15s, border-color 0.2s, background 0.2s; }
@@ -592,7 +594,7 @@
           <p id="game-ov-text">Sos un policía 8-bit: <b>saltá</b> y <b>dispará</b> a los que se acercan. Aguantá lo más que puedas y metete en el ranking.</p>
           <div id="game-claim" class="game-claim" hidden></div>
           <form id="game-ov-form">
-            <input id="game-name" type="text" maxlength="12" placeholder="Tu nombre / apodo" aria-label="Tu nombre">
+            <input id="game-name" type="text" maxlength="12" placeholder="Tu Instagram o apodo" aria-label="Tu Instagram o apodo">
             <button id="game-save" type="submit">Guardar</button>
           </form>
           <button id="game-start" type="button">▶ Jugar</button>
@@ -607,7 +609,7 @@
         </div>
         <div class="scope" id="game-board-scope">local</div>
         <ol id="game-board"></ol>
-        <p class="rank-prize">El <b>#1 de la semana</b> se gana un cupón de JEAL' Studio 3D. 🎁</p>
+        <p class="rank-prize">El <b>#1 de la semana</b> se gana un cupón. Poné tu <b>Instagram</b> como nombre: si ganás, te contactamos. 🎁</p>
       </aside>
     </div>
   </section>
@@ -837,7 +839,7 @@
   window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
   window.JEAL_STUDIO_BOT = "https://yeooahkzxdsjwcjkffea.supabase.co/functions/v1/studio-web";
 </script>
-<script src="js/game.js?v=9" defer></script>
+<script src="js/game.js?v=10" defer></script>
 <!-- Widget de chat del estudio (bot 3D, aislado del de LAMBDA). Degrada a WhatsApp si el endpoint no está. -->
 <script src="js/chat.js?v=2" defer></script>
 
