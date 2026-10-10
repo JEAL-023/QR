@@ -422,7 +422,7 @@
       fetch(LB_URL + "?select=name,score&order=score.desc&limit=10", { headers: h })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
         .then(function (d) { renderBoard(d, "mundial 🌎"); })
-        .catch(function () { renderBoard(localBoard(), "local (sin conexión)"); });
+        .catch(function () { renderBoard(localBoard(), "local"); });
     } else {
       renderBoard(localBoard(), "local");
     }

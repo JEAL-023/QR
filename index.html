@@ -795,8 +795,13 @@
   } else { items.forEach((el) => el.classList.add("visible")); }
 </script>
 
-<!-- Mini-juego 8-bit "Patrulla 3D" (ranking mundial opcional vía window.JEAL_LB_URL) -->
-<script src="js/game.js?v=2" defer></script>
+<!-- Mini-juego 8-bit "Patrulla 3D". Ranking mundial vía Supabase (clave PUBLICABLE, no secreta).
+     Si la tabla aún no existe, el juego cae solo en ranking local. -->
+<script>
+  window.JEAL_LB_URL = "https://yeooahkzxdsjwcjkffea.supabase.co/rest/v1/jeal_game_scores";
+  window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
+</script>
+<script src="js/game.js?v=3" defer></script>
 
 </body>
 </html>
