@@ -289,6 +289,20 @@
   #game-board .nm { flex: 1; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   #game-board .sc { color: var(--pink); font-weight: 700; font-family: var(--display); }
   #game-board .empty { color: var(--muted); font-size: 0.8rem; justify-content: center; border: none; }
+  #game { scroll-margin-top: 84px; }
+  .reward-teaser-wrap { text-align: center; }
+  .reward-teaser { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; border-radius: 999px; font-size: 0.98rem; font-weight: 600; text-decoration: none; color: var(--fg); background: linear-gradient(120deg, rgba(155,91,255,0.14), rgba(255,79,216,0.12)); border: 1px solid var(--line); transition: transform 0.15s, border-color 0.2s, background 0.2s; }
+  .reward-teaser b { background: linear-gradient(120deg,var(--violet-soft),var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .reward-teaser:hover { transform: translateY(-2px); border-color: var(--violet); background: linear-gradient(120deg, rgba(155,91,255,0.22), rgba(255,79,216,0.18)); }
+  .reward-teaser .rt-arrow { animation: rtbob 1.6s ease-in-out infinite; }
+  @keyframes rtbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
+  .rank-prize { margin-top: 12px; font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+  .rank-prize b { color: var(--violet-soft); }
+  .game-claim { background: linear-gradient(120deg, rgba(255,211,77,0.14), rgba(255,79,216,0.12)); border: 1px solid rgba(255,211,77,0.42); border-radius: 12px; padding: 12px 14px; max-width: 430px; }
+  .game-claim h4 { font-family: var(--display); font-size: 1rem; margin-bottom: 4px; color: var(--fg); }
+  .game-claim p { font-size: 0.84rem; color: var(--muted); margin: 0 0 9px; }
+  .game-claim .claim-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .game-claim a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; text-decoration: none; color: #fff; background: linear-gradient(120deg,var(--violet),var(--pink)); }
   @media (hover: none) and (pointer: coarse) { .game-touch { display: flex; } .game-controls { display: none; } }
 
   /* ---------- Animación de entrada ---------- */
@@ -449,43 +463,10 @@
     </div>
   </section>
 
-  <!-- JUEGO 8-bit "Patrulla 3D" -->
-  <section id="game" class="game-band reveal" aria-label="Mini-juego Patrulla 3D">
-    <div class="wrap game-inner">
-      <div class="game-head">
-        <h2>🎮 <span class="k">Patrulla 3D</span> — jugá un rato</h2>
-        <span class="game-tag">8-bit · liviano · funciona offline · ranking mundial</span>
-      </div>
-      <div class="game-stage">
-        <canvas id="game-canvas" width="640" height="164"></canvas>
-        <div class="game-hud">
-          <span class="box">Puntos: <b id="game-score">0</b></span>
-          <span class="box">Récord: <b id="game-best">0</b></span>
-          <span class="box" id="game-lives">▮▮▮</span>
-          <button id="game-mute" class="box" type="button" title="Silenciar">🔊</button>
-        </div>
-        <div class="game-touch">
-          <button id="game-bjump" type="button" aria-label="Saltar" title="Saltar">S</button>
-          <button id="game-bfire" type="button" aria-label="Fuego" title="Fuego">F</button>
-        </div>
-        <div id="game-overlay" class="game-overlay show">
-          <h3 id="game-ov-title">PATRULLA 3D</h3>
-          <p id="game-ov-text">Sos un policía 8-bit: <b>saltá</b> y <b>dispará</b> a los que se acercan. Aguantá lo más que puedas y metete en el ranking.</p>
-          <form id="game-ov-form">
-            <input id="game-name" type="text" maxlength="12" placeholder="Tu nombre / apodo" aria-label="Tu nombre">
-            <button id="game-save" type="submit">Guardar</button>
-          </form>
-          <button id="game-start" type="button">▶ Jugar</button>
-          <p class="game-controls">⎵ / ↑ saltar · X disparar · ◀ ▶ moverse</p>
-        </div>
-      </div>
-      <aside class="game-rank">
-        <h3>🏆 Ranking</h3>
-        <div class="scope" id="game-board-scope">local</div>
-        <ol id="game-board"></ol>
-      </aside>
-    </div>
-  </section>
+  <!-- Teaser discreto de recompensas -> baja al juego -->
+  <div class="wrap reward-teaser-wrap reveal">
+    <a href="#game" class="reward-teaser">🎮 ¿Querés cupones de descuento? <b>Ganátelos jugando</b> <span class="rt-arrow">↓</span></a>
+  </div>
 
   <!-- QR EN ACCIÓN -->
   <section id="qr-en-accion" class="wrap reveal">
@@ -579,6 +560,46 @@
         <p class="muted">¿Querés que se vea distinto? Tenemos filamentos que brillan en la oscuridad, perfumados y símil madera.</p>
         <div class="tags"><span class="tag">Luminoso</span><span class="tag">Perfumado</span><span class="tag">Símil madera</span></div>
       </div>
+    </div>
+  </section>
+
+  <!-- JUEGO 8-bit "Patrulla 3D" (abajo, con recompensas) -->
+  <section id="game" class="game-band reveal" aria-label="Mini-juego Patrulla 3D">
+    <div class="wrap game-inner">
+      <div class="game-head">
+        <h2>🎮 <span class="k">Patrulla 3D</span> — jugá y ganá cupones</h2>
+        <span class="game-tag">8-bit · liviano · funciona offline · ranking mundial</span>
+      </div>
+      <div class="game-stage">
+        <canvas id="game-canvas" width="640" height="164"></canvas>
+        <div class="game-hud">
+          <span class="box">Puntos: <b id="game-score">0</b></span>
+          <span class="box">Récord: <b id="game-best">0</b></span>
+          <span class="box" id="game-lives">▮▮▮</span>
+          <button id="game-mute" class="box" type="button" title="Silenciar">🔊</button>
+        </div>
+        <div class="game-touch">
+          <button id="game-bjump" type="button" aria-label="Saltar" title="Saltar">S</button>
+          <button id="game-bfire" type="button" aria-label="Fuego" title="Fuego">F</button>
+        </div>
+        <div id="game-overlay" class="game-overlay show">
+          <h3 id="game-ov-title">PATRULLA 3D</h3>
+          <p id="game-ov-text">Sos un policía 8-bit: <b>saltá</b> y <b>dispará</b> a los que se acercan. Aguantá lo más que puedas y metete en el ranking.</p>
+          <div id="game-claim" class="game-claim" hidden></div>
+          <form id="game-ov-form">
+            <input id="game-name" type="text" maxlength="12" placeholder="Tu nombre / apodo" aria-label="Tu nombre">
+            <button id="game-save" type="submit">Guardar</button>
+          </form>
+          <button id="game-start" type="button">▶ Jugar</button>
+          <p class="game-controls">⎵ / ↑ saltar · X disparar · ◀ ▶ moverse</p>
+        </div>
+      </div>
+      <aside class="game-rank">
+        <h3>🏆 Ranking</h3>
+        <div class="scope" id="game-board-scope">local</div>
+        <ol id="game-board"></ol>
+        <p class="rank-prize">El <b>#1 de la semana</b> se gana un cupón de JEAL' Studio 3D. 🎁</p>
+      </aside>
     </div>
   </section>
 
@@ -806,7 +827,7 @@
   window.JEAL_LB_URL = "https://yeooahkzxdsjwcjkffea.supabase.co/rest/v1/jeal_game_scores";
   window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
 </script>
-<script src="js/game.js?v=6" defer></script>
+<script src="js/game.js?v=7" defer></script>
 
 </body>
 </html>

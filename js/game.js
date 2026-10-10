@@ -29,6 +29,7 @@
   var btnFire = document.getElementById("game-bfire");
   var boardEl = document.getElementById("game-board");
   var boardScope = document.getElementById("game-board-scope");
+  var elClaim = document.getElementById("game-claim");
 
   // ---------- Resolución lógica (pixel-art) ----------
   var LH = 110;              // alto lógico (franja fina)
@@ -589,6 +590,7 @@
   function startGame() {
     reset(); state = "playing"; last = 0; acc = 0;
     overlay.classList.remove("show");
+    if (elClaim) elClaim.hidden = true;
     renderLives();
     if (actx() && AC.state === "suspended") AC.resume();
   }
@@ -604,6 +606,20 @@
     ovName.value = localStorage.getItem("jeal_name") || "";
     overlay.classList.add("show");
     pendingScore = fs;
+    // ¿Quedaste #1? -> mostrar "Reclamar premio" (validación por red social)
+    if (elClaim) {
+      if (fs > 0 && fs > topScore) {
+        var nm = localStorage.getItem("jeal_name") || "";
+        var waMsg = encodeURIComponent("¡Hola! Quedé #1 en Patrulla 3D" + (nm ? " (ranking: " + nm + ")" : "") + " y quiero reclamar mi cupón 🎁");
+        elClaim.innerHTML = '<h4>🏆 ¡Quedaste #1 del ranking!</h4>' +
+          '<p>Reclamá tu cupón escribiéndonos desde tu cuenta, así validamos que sos vos:</p>' +
+          '<div class="claim-btns">' +
+            '<a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">📷 Instagram</a>' +
+            '<a href="https://wa.me/5491161067544?text=' + waMsg + '" target="_blank" rel="noopener">💬 WhatsApp</a>' +
+          '</div>';
+        elClaim.hidden = false;
+      } else { elClaim.hidden = true; }
+    }
     drawFrame();
   }
 
@@ -611,6 +627,7 @@
 
   // ---------- Ranking ----------
   var pendingScore = 0;
+  var topScore = 0;   // mejor puntaje del ranking (para saber si quedás #1)
   var LB_URL = window.JEAL_LB_URL || null;
   var LB_KEY = window.JEAL_LB_KEY || null;
 
@@ -623,6 +640,7 @@
   function renderBoard(list, scopeLabel) {
     if (!boardEl) return;
     if (boardScope) boardScope.textContent = scopeLabel;
+    topScore = (list && list.length) ? (list[0].score | 0) : 0;
     if (!list || !list.length) { boardEl.innerHTML = '<li class="empty">Todavía no hay puntajes. ¡Sé el primero!</li>'; return; }
     var html = "";
     for (var i = 0; i < Math.min(10, list.length); i++) {
