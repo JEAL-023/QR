@@ -23,32 +23,32 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
 <style>
   :root {
     --bg: #0b0a0f;
-    --bg-2: #121019;
     --fg: #ffffff;
-    --muted: #b8b8c9;
+    --muted: #b4b4c6;
     --violet: #9b5bff;
     --violet-soft: #c7a3ff;
     --pink: #ff4fd8;
-    --line: rgba(155, 91, 255, 0.25);
-    --card: rgba(255, 255, 255, 0.035);
+    --line: rgba(155, 91, 255, 0.22);
+    --card: rgba(255, 255, 255, 0.04);
     --wa: #25d366;
     --radius: 18px;
+    --maxw: 1200px;
+    --display: "Space Grotesk", "Inter", system-ui, sans-serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--fg);
-    line-height: 1.55;
+    line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
@@ -60,426 +60,226 @@
     inset: 0;
     z-index: -1;
     background:
-      radial-gradient(60% 45% at 50% 0%, rgba(155, 91, 255, 0.28), transparent 70%),
-      radial-gradient(40% 35% at 90% 30%, rgba(255, 79, 216, 0.12), transparent 70%),
+      radial-gradient(50% 38% at 72% -5%, rgba(155, 91, 255, 0.34), transparent 70%),
+      radial-gradient(38% 34% at 10% 15%, rgba(255, 79, 216, 0.14), transparent 70%),
+      radial-gradient(45% 42% at 90% 75%, rgba(155, 91, 255, 0.10), transparent 70%),
       var(--bg);
   }
 
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
 
   /* ---------- Barra superior ---------- */
   .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgba(11, 10, 15, 0.7);
+    position: sticky; top: 0; z-index: 40;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: rgba(11, 10, 15, 0.72);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; }
 
-  .topbar .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-  }
-
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: -0.01em;
-  }
-
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 1.08rem; text-decoration: none; letter-spacing: -0.01em; }
   .brand svg { width: 28px; height: 28px; }
 
-  .nav { display: flex; gap: 22px; }
-
-  .nav a {
-    text-decoration: none;
-    color: var(--muted);
-    font-size: 0.92rem;
-    font-weight: 500;
-  }
-
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav a { text-decoration: none; color: var(--muted); font-size: 0.92rem; font-weight: 500; transition: color 0.2s; }
   .nav a:hover { color: var(--fg); }
+  .nav .btn { padding: 9px 18px; font-size: 0.9rem; }
 
   /* ---------- Botones ---------- */
   .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 24px;
-    border-radius: 14px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--fg);
-    cursor: pointer;
-    transition: transform 0.15s ease-out, background 0.2s, border-color 0.2s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 26px; border-radius: 14px; text-decoration: none; font-weight: 600; font-size: 1rem;
+    border: 1px solid var(--line); background: rgba(255, 255, 255, 0.04); color: var(--fg); cursor: pointer;
+    transition: transform 0.15s ease-out, background 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
-
   .btn:hover { border-color: var(--violet); background: rgba(155, 91, 255, 0.15); }
   .btn:active { transform: scale(0.98); }
-
-  .btn-primary {
-    border: none;
-    background: linear-gradient(120deg, var(--violet), var(--pink));
-    box-shadow: 0 8px 30px rgba(155, 91, 255, 0.35);
-  }
-
-  .btn-primary:hover { background: linear-gradient(120deg, #a86bff, #ff63dd); }
-
+  .btn-primary { border: none; background: linear-gradient(120deg, var(--violet), var(--pink)); box-shadow: 0 10px 34px rgba(155, 91, 255, 0.4); }
+  .btn-primary:hover { background: linear-gradient(120deg, #a86bff, #ff63dd); box-shadow: 0 12px 40px rgba(255, 79, 216, 0.4); }
   .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 
-  /* ---------- Hero ---------- */
-  .hero {
-    padding: 72px 0 56px;
-    text-align: center;
+  /* ---------- Botones sociales flotantes (izquierda) ---------- */
+  .social-rail {
+    position: fixed; left: 16px; top: 50%; transform: translateY(-50%); z-index: 35;
+    display: flex; flex-direction: column; gap: 10px;
   }
+  .social-rail a {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: var(--violet-soft); transition: transform 0.15s, color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .social-rail a:hover { color: #fff; border-color: var(--violet); background: rgba(155, 91, 255, 0.2); transform: translateY(-2px); }
+  .social-rail svg { width: 20px; height: 20px; }
+
+  /* ---------- Hero (split) ---------- */
+  .hero { padding: 64px 0 44px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; }
 
   .badge {
-    display: inline-block;
-    padding: 6px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(155, 91, 255, 0.08);
-    color: var(--violet-soft);
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-bottom: 22px;
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: rgba(155, 91, 255, 0.1); color: var(--violet-soft);
+    font-size: 0.85rem; font-weight: 500; margin-bottom: 24px;
   }
+  .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 10px var(--pink); }
 
   h1 {
-    font-size: clamp(2.6rem, 8vw, 4.2rem);
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    background: linear-gradient(120deg, #fff 20%, var(--violet-soft), var(--pink));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    font-family: var(--display); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em;
+    font-size: clamp(2.5rem, 5vw, 3.9rem);
   }
+  h1 .grad { background: linear-gradient(120deg, var(--violet-soft), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
-  /* El logo tiene fondo del mismo negro de la página; "lighten" lo funde con el brillo violeta */
-  .hero-logo {
-    display: block;
-    width: 100%;
-    max-width: 520px;
-    height: auto;
-    margin: 0 auto;
-    mix-blend-mode: lighten;
-  }
+  .hero-sub { margin: 20px 0 0; max-width: 480px; font-size: clamp(1.05rem, 2vw, 1.18rem); color: var(--muted); }
 
-  .hero-sub {
-    margin: 18px auto 0;
-    max-width: 560px;
-    font-size: clamp(1.05rem, 2.6vw, 1.2rem);
-    color: var(--muted);
-  }
-
-  .hero-buttons {
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .hero-chips {
-    margin-top: 34px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
+  .hero-buttons { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-chips { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
   .chip {
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: var(--card);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    font-size: 0.85rem;
-    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px;
+    background: var(--card); border: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.85rem; color: var(--muted);
   }
+  .chip svg { width: 15px; height: 15px; color: var(--violet-soft); }
+
+  /* Logo interactivo con física */
+  .hero-stage { position: relative; width: 100%; max-width: 580px; margin: 0 auto; aspect-ratio: 1 / 1; }
+  #logo-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; filter: drop-shadow(0 18px 50px rgba(155, 91, 255, 0.35)); }
+  #logo-canvas:active { cursor: grabbing; }
+  .hero-stage .fallback { width: 100%; height: auto; display: block; }
+  .logo-hint { position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); font-size: 0.78rem; color: var(--muted); opacity: 0.7; white-space: nowrap; pointer-events: none; transition: opacity 0.3s; }
+  .logo-reset { position: absolute; top: 4px; right: 4px; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--violet-soft); cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s, background 0.2s; font-size: 1.1rem; line-height: 1; }
+  .logo-reset.show { opacity: 1; pointer-events: auto; }
+  .logo-reset:hover { background: rgba(155,91,255,0.2); color: #fff; }
 
   /* ---------- Secciones ---------- */
-  section { padding: 44px 0; scroll-margin-top: 70px; }
+  section { padding: 56px 0; scroll-margin-top: 80px; }
+  .section-head { margin-bottom: 34px; max-width: 640px; }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  h2 { font-family: var(--display); font-size: clamp(1.7rem, 3.4vw, 2.3rem); font-weight: 700; letter-spacing: -0.02em; }
+  .section-head p { color: var(--muted); margin-top: 8px; font-size: 1.04rem; }
 
-  .section-head { margin-bottom: 26px; }
-
-  h2 {
-    font-size: clamp(1.5rem, 4vw, 1.9rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  .section-head p { color: var(--muted); margin-top: 6px; }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 18px;
-  }
+  .grid { display: grid; gap: 18px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
 
   .card {
-    padding: 24px;
-    border-radius: var(--radius);
-    background: var(--card);
-    border: 1px solid var(--line);
-    transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    display: flex;
-    flex-direction: column;
+    padding: 24px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column;
   }
-
-  .card:hover {
-    border-color: var(--violet);
-    background: rgba(155, 91, 255, 0.08);
-    transform: translateY(-2px);
-  }
+  .card:hover { border-color: var(--violet); background: rgba(155, 91, 255, 0.08); transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35); }
 
   .card-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    font-size: 1.4rem;
-    background: linear-gradient(135deg, rgba(155, 91, 255, 0.25), rgba(255, 79, 216, 0.18));
-    margin-bottom: 16px;
+    width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center;
+    background: linear-gradient(135deg, rgba(155, 91, 255, 0.28), rgba(255, 79, 216, 0.2));
+    border: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 16px;
   }
+  .card-icon svg { width: 23px; height: 23px; color: #fff; }
 
-  .card h3 { font-size: 1.12rem; font-weight: 600; margin-bottom: 6px; }
+  .card h3 { font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-bottom: 7px; }
+  .muted { color: var(--muted); font-size: 0.94rem; }
 
-  .muted { color: var(--muted); font-size: 0.95rem; }
+  .card-link { margin-top: auto; padding-top: 16px; color: var(--violet-soft); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+  .card-link:hover { color: #fff; }
 
-  .card-link {
-    margin-top: auto;
-    padding-top: 16px;
-    color: var(--violet-soft);
-    font-weight: 600;
-    font-size: 0.92rem;
-    text-decoration: none;
+  /* ---------- Trabajos (Instagram) ---------- */
+  .works-grid { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: 36px; align-items: center; }
+  .insta-box { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .insta-box iframe { display: block; width: 100%; height: 440px; border: none; }
+  .works-copy h2 { margin-bottom: 12px; }
+  .works-copy p { color: var(--muted); margin-bottom: 20px; }
+  .works-live { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--violet-soft); margin-bottom: 16px; }
+  .works-live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 10px var(--pink); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* ---------- Pasos (timeline horizontal) ---------- */
+  .steps { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .steps::before { content: ""; position: absolute; top: 28px; left: 12%; right: 12%; height: 2px; background: linear-gradient(90deg, var(--violet), var(--pink)); opacity: 0.4; }
+  .step { text-align: center; position: relative; }
+  .step-num {
+    width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--display); font-weight: 700; font-size: 1.3rem; color: #fff;
+    background: linear-gradient(120deg, var(--violet), var(--pink)); box-shadow: 0 8px 24px rgba(155, 91, 255, 0.45);
+    border: 4px solid var(--bg);
   }
-
-  .card-link:hover { text-decoration: underline; }
-
-  /* ---------- Pasos ---------- */
-  .steps { counter-reset: paso; }
-
-  .step { position: relative; padding-top: 58px; }
-
-  .step::before {
-    counter-increment: paso;
-    content: counter(paso);
-    position: absolute;
-    top: 22px;
-    left: 24px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-weight: 700;
-    font-size: 0.9rem;
-    background: linear-gradient(120deg, var(--violet), var(--pink));
-  }
+  .step h3 { font-family: var(--display); font-size: 1.08rem; margin-bottom: 6px; }
 
   /* ---------- Precios ---------- */
+  .price-card { padding: 28px; }
   .price-list { list-style: none; margin-top: 8px; }
-
-  .price-list li {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 11px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-    color: var(--muted);
-  }
-
+  .price-list li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); color: var(--muted); }
   .price-list li:last-child { border-bottom: none; }
-
   .price-list strong { color: var(--fg); font-weight: 600; white-space: nowrap; }
-
-  .note {
-    margin-top: 18px;
-    font-size: 0.88rem;
-    color: var(--muted);
-    text-align: center;
-  }
+  .quote-card { display: flex; flex-direction: column; justify-content: center; text-align: left; background: linear-gradient(135deg, rgba(155, 91, 255, 0.16), rgba(255, 79, 216, 0.12)); }
+  .quote-card .how { color: var(--muted); margin: 10px 0 20px; }
+  .note { margin-top: 20px; font-size: 0.9rem; color: var(--muted); text-align: center; }
 
   /* ---------- Materiales ---------- */
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .tag { padding: 5px 11px; border-radius: 8px; font-size: 0.82rem; background: rgba(155, 91, 255, 0.14); color: var(--violet-soft); }
 
-  .tag {
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.82rem;
-    background: rgba(155, 91, 255, 0.12);
-    color: var(--violet-soft);
-  }
+  /* ---------- Ecosistema LAMBDA ---------- */
+  .eco { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; padding: 36px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); }
+  .eco h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); }
+  .eco p { color: var(--muted); margin-top: 10px; }
+  .eco-brands { display: flex; flex-wrap: wrap; gap: 10px; }
+  .eco-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; background: rgba(0,0,0,0.25); border: 1px solid var(--line); font-size: 0.9rem; }
+  .eco-pill b { font-family: var(--display); }
+  .eco-pill span { color: var(--muted); font-size: 0.82rem; }
 
   /* ---------- Pago ---------- */
-  .pay {
-    text-align: center;
-    padding: 32px 24px;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    background:
-      radial-gradient(80% 120% at 50% 0%, rgba(155, 91, 255, 0.14), transparent 70%),
-      var(--card);
-  }
-
-  .alias-row {
-    margin: 16px auto 8px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .alias {
-    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
-    font-size: 1.15rem;
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(155, 91, 255, 0.5);
-    user-select: all;
-  }
-
-  .copy-btn { padding: 10px 16px; font-size: 0.92rem; }
-
+  .pay { text-align: center; padding: 40px 24px; border-radius: 22px; border: 1px solid var(--line); background: radial-gradient(80% 120% at 50% 0%, rgba(155, 91, 255, 0.16), transparent 70%), var(--card); }
+  .alias-row { margin: 18px auto 8px; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .alias { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 1.15rem; padding: 11px 18px; border-radius: 10px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(155, 91, 255, 0.5); user-select: all; }
+  .copy-btn { padding: 11px 18px; font-size: 0.92rem; }
   .copy-btn.ok { border-color: var(--wa); background: rgba(37, 211, 102, 0.15); }
 
-  /* ---------- Instagram ---------- */
-  .hero-insta {
-    max-width: 480px;
-    margin: 28px auto 0;
-    text-align: left;
-  }
-
-  .insta-box {
-    margin-bottom: 12px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--line);
-    background: #fff;
-  }
-
-  /* La altura se ajusta sola con lo que informa Instagram (ver script al final) */
-  .insta-box iframe {
-    display: block;
-    width: 100%;
-    height: 420px;
-    border: none;
-  }
-
-  .insta {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 22px 24px;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    background: var(--card);
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  .insta:hover { border-color: var(--pink); background: rgba(255, 79, 216, 0.08); }
-
-  .insta-icon {
-    width: 56px;
-    height: 56px;
-    flex-shrink: 0;
-    border-radius: 16px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(45deg, #f9ce34, #ee2a7b, #6228d7);
-  }
-
-  .insta-icon svg { width: 30px; height: 30px; }
-
-  .insta strong { display: block; font-size: 1.1rem; }
-
-  .insta .arrow { margin-left: auto; font-size: 1.4rem; color: var(--muted); }
-
   /* ---------- CTA final ---------- */
-  .cta {
-    text-align: center;
-    padding: 48px 24px;
-    border-radius: 24px;
-    background: linear-gradient(120deg, rgba(155, 91, 255, 0.22), rgba(255, 79, 216, 0.16));
-    border: 1px solid var(--line);
-  }
-
-  .cta p { color: var(--muted); margin: 10px auto 24px; max-width: 460px; }
+  .cta { text-align: center; padding: 56px 24px; border-radius: 24px; background: linear-gradient(120deg, rgba(155, 91, 255, 0.24), rgba(255, 79, 216, 0.18)); border: 1px solid var(--line); }
+  .cta p { color: var(--muted); margin: 12px auto 26px; max-width: 460px; }
 
   /* ---------- Footer ---------- */
-  footer {
-    margin-top: 40px;
-    padding: 36px 20px 100px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .footer-links {
-    margin-top: 14px;
-    display: flex;
-    justify-content: center;
-    gap: 22px;
-    flex-wrap: wrap;
-  }
-
-  .footer-hours { margin-top: 8px; font-size: 0.85rem; line-height: 1.6; }
-
+  footer { margin-top: 44px; padding: 38px 20px 70px; text-align: center; color: var(--muted); font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+  .footer-links { margin-top: 16px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .footer-hours { margin-top: 10px; font-size: 0.85rem; line-height: 1.7; }
   .footer-links a { color: var(--violet-soft); text-decoration: none; }
   .footer-links a:hover { text-decoration: underline; }
+  .footer-eco { margin-top: 14px; font-size: 0.82rem; opacity: 0.8; }
 
-  /* ---------- Botón flotante de WhatsApp ---------- */
-  .wa-float {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 30;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--wa);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-    transition: transform 0.15s;
-  }
-
+  /* ---------- WhatsApp flotante ---------- */
+  .wa-float { position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; background: var(--wa); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); transition: transform 0.15s; }
   .wa-float:hover { transform: scale(1.06); }
   .wa-float svg { width: 32px; height: 32px; }
 
   /* ---------- Animación de entrada ---------- */
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
   .reveal.visible { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .reveal { opacity: 1; transform: none; transition: none; }
-    .card, .btn, .wa-float { transition: none; }
+    .card, .btn, .wa-float, .hero-logo { transition: none; animation: none; }
   }
 
-  @media (max-width: 640px) {
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .hero-stage { order: -1; }
+    .hero-sub { margin-left: auto; margin-right: auto; }
+    .hero-buttons, .hero-chips { justify-content: center; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .works-grid { grid-template-columns: 1fr; gap: 24px; }
+    .insta-box { max-width: 460px; margin: 0 auto; }
+    .eco { grid-template-columns: 1fr; text-align: center; }
+    .eco-brands { justify-content: center; }
+  }
+  @media (max-width: 620px) {
+    .wrap { padding: 0 18px; }
     .nav { display: none; }
-    .hero { padding: 52px 0 40px; }
+    .social-rail { display: none; }
+    .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; gap: 28px; }
+    .steps::before { display: none; }
     .hero-buttons .btn { width: 100%; }
-    section { padding: 34px 0; }
+    section { padding: 42px 0; }
   }
 </style>
 </head>
@@ -488,17 +288,28 @@
 
 <div class="bg" aria-hidden="true"></div>
 
+<!-- BOTONES SOCIALES FLOTANTES (IZQUIERDA) -->
+<nav class="social-rail" aria-label="Redes y contacto">
+  <a href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
+  </a>
+  <a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.facebook.com/61594212595148" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/></svg>
+  </a>
+  <a href="mailto:jonatanlandeira@gmail.com" aria-label="Email" title="Email">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+  </a>
+</nav>
+
 <!-- BARRA SUPERIOR -->
 <header class="topbar">
   <div class="wrap">
     <a class="brand" href="#inicio" aria-label="JEAL Studio, inicio">
       <svg viewBox="0 0 64 64" aria-hidden="true">
-        <defs>
-          <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#9b5bff" />
-            <stop offset="1" stop-color="#ff4fd8" />
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9b5bff" /><stop offset="1" stop-color="#ff4fd8" /></linearGradient></defs>
         <path d="M32 6 54 18.5v27L32 58 10 45.5v-27z" fill="none" stroke="url(#logo-g)" stroke-width="5" stroke-linejoin="round" />
         <path d="M10 18.5 32 31l22-12.5M32 31v27" fill="none" stroke="url(#logo-g)" stroke-width="5" stroke-linejoin="round" />
       </svg>
@@ -506,55 +317,45 @@
     </a>
     <nav class="nav" aria-label="Secciones">
       <a href="#servicios">Servicios</a>
+      <a href="#trabajos">Trabajos</a>
       <a href="#como-pedir">Cómo pedir</a>
       <a href="#precios">Precios</a>
-      <a href="#pago">Pago</a>
+      <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">Pedir presupuesto</a>
     </nav>
   </div>
 </header>
 
 <main id="inicio">
 
-  <!-- HERO -->
-  <div class="hero wrap">
-    <span class="badge">Impresión 3D a pedido</span>
-    <h1><img class="hero-logo" src="img/logo.jpg" alt="JEAL' Studio 3D" width="900" height="531" /></h1>
-    <p class="hero-sub">Llevamos tu idea de la pantalla a la mano: diseñamos, modelamos e imprimimos en 3D piezas únicas, llaveros, logos y placas QR.</p>
-
-    <div class="hero-buttons">
-      <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
-        Pedir presupuesto
-      </a>
-    </div>
-
-    <!-- INSTAGRAM -->
-    <div class="hero-insta" id="instagram">
-      <div class="insta-box">
-        <iframe id="insta-frame" src="https://www.instagram.com/jealstudio3d/embed" title="Últimas publicaciones de @jealstudio3d en Instagram" allowfullscreen></iframe>
+  <!-- HERO (split) -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="badge">Impresión 3D a pedido · Moreno, GBA</span>
+        <h1>De tu idea<br>a la <span class="grad">pieza real</span>.</h1>
+        <p class="hero-sub">Diseñamos, modelamos e imprimimos en 3D piezas únicas, llaveros, logos y placas QR. A medida, en los colores que quieras.</p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
+            Pedir presupuesto
+          </a>
+          <a class="btn" href="#trabajos">Ver trabajos</a>
+        </div>
+        <div class="hero-chips" aria-label="Destacados">
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 2a10 10 0 0 0 0 20 1.25 1.25 0 0 0 1-2 1.25 1.25 0 0 1 1-2h1.5a4.5 4.5 0 0 0 4.5-4.5A10 10 0 0 0 12 2Z"/></svg> Multicolor</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></svg> Diseño a medida</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Entrega en 48 h</span>
+          <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg> Envíos</span>
+        </div>
       </div>
-      <a class="insta" href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">
-        <span class="insta-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg>
-        </span>
-        <span>
-          <strong>@jealstudio3d</strong>
-          <span class="muted">Mirá todos nuestros trabajos en Instagram</span>
-        </span>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
+      <div class="hero-stage" id="hero-stage">
+        <canvas id="logo-canvas"></canvas>
+        <noscript><img class="fallback" src="img/logo.png" alt="JEAL' Studio 3D" /></noscript>
+        <button id="logo-reset" class="logo-reset" type="button" aria-label="Reacomodar el logo" title="Reacomodar">↻</button>
+        <span class="logo-hint" id="logo-hint">tocá el logo 👆</span>
+      </div>
     </div>
-
-    <div class="hero-buttons">
-      <a class="btn" href="#qr-en-accion">Ver QR en acción</a>
-    </div>
-
-    <div class="hero-chips" aria-label="Destacados">
-      <span class="chip">🎨 Multicolor</span>
-      <span class="chip">📐 Diseño a medida</span>
-      <span class="chip">💳 Mercado Pago</span>
-    </div>
-  </div>
+  </section>
 
   <!-- SERVICIOS -->
   <section id="servicios" class="wrap reveal">
@@ -562,31 +363,46 @@
       <h2>Qué hacemos</h2>
       <p>Si lo podés imaginar, lo charlamos. Tocá cualquier servicio para consultar directo por WhatsApp.</p>
     </div>
-    <div class="grid">
+    <div class="grid grid-4">
       <article class="card">
-        <div class="card-icon" aria-hidden="true">🧩</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
         <h3>Impresión 3D</h3>
         <p class="muted">Piezas funcionales, repuestos, prototipos y objetos decorativos, en uno o varios colores.</p>
         <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20una%20impresi%C3%B3n%203D." target="_blank" rel="noopener">Consultar →</a>
       </article>
       <article class="card">
-        <div class="card-icon" aria-hidden="true">🔑</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></div>
         <h3>Llaveros y logos</h3>
         <p class="muted">Tu marca, tu nombre o el escudo de tu equipo convertidos en llaveros, carteles y souvenirs.</p>
         <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20llaveros%20o%20logos%20personalizados." target="_blank" rel="noopener">Consultar →</a>
       </article>
       <article class="card">
-        <div class="card-icon" aria-hidden="true">🔗</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M15 15h2v2h-2zM19 15h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2z"/></svg></div>
         <h3>Placas QR</h3>
         <p class="muted">Placas con QR funcional y tu logo integrado: para tu local, tu menú, tus redes o tu mascota.</p>
-        <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20consultar%20por%20una%20placa%20QR." target="_blank" rel="noopener">Consultar →</a>
+        <a class="card-link" href="#qr-en-accion">Ver ejemplos →</a>
       </article>
       <article class="card">
-        <div class="card-icon" aria-hidden="true">📐</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
         <h3>Modelado 3D</h3>
         <p class="muted">¿Tenés solo una foto, un dibujo o un logo? Lo vectorizamos y lo modelamos para que se pueda imprimir.</p>
         <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20necesito%20un%20dise%C3%B1o%20o%20modelado%203D." target="_blank" rel="noopener">Consultar →</a>
       </article>
+    </div>
+  </section>
+
+  <!-- TRABAJOS (Instagram en vivo) -->
+  <section id="trabajos" class="wrap reveal">
+    <div class="works-grid">
+      <div class="insta-box">
+        <iframe id="insta-frame" src="https://www.instagram.com/jealstudio3d/embed" title="Últimas publicaciones de @jealstudio3d en Instagram" loading="lazy" allowfullscreen></iframe>
+      </div>
+      <div class="works-copy">
+        <span class="works-live">En vivo desde Instagram</span>
+        <h2>Nuestros trabajos</h2>
+        <p>Lo último que sale de la impresora, siempre actualizado. Miniaturas, llaveros, placas, piezas a medida y mucho más. Seguinos en <strong>@jealstudio3d</strong> con el botón de la izquierda y no te pierdas nada.</p>
+        <a class="btn btn-primary" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20vi%20sus%20trabajos%20y%20quiero%20hacer%20un%20pedido." target="_blank" rel="noopener">Quiero algo así</a>
+      </div>
     </div>
   </section>
 
@@ -596,15 +412,15 @@
       <h2>QR en acción</h2>
       <p>Cada placa QR lleva a una página propia, diseñada por nosotros. Escaneás y aparece esto:</p>
     </div>
-    <div class="grid">
+    <div class="grid grid-2">
       <article class="card">
-        <div class="card-icon" aria-hidden="true">🍕</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg></div>
         <h3>Para tu local</h3>
-        <p class="muted">Menú, horarios, si está abierto ahora, cómo llegar y pedidos por WhatsApp, todo en un escaneo.</p>
-        <a class="card-link" href="https://www.skalpizzeria.com.ar/" target="_blank" rel="noopener">Ver ejemplo: SKÅL Pizzería →</a>
+        <p class="muted">Menú, horarios, si está abierto ahora, cómo llegar y pedidos por WhatsApp, todo en un escaneo. Una mini-web, sin apps.</p>
+        <a class="card-link" href="https://www.skalpizzeria.com.ar/" target="_blank" rel="noopener">Ver caso real: SKÅL Pizzería →</a>
       </article>
       <article class="card">
-        <div class="card-icon" aria-hidden="true">🐶</div>
+        <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/></svg></div>
         <h3>Para tu mascota</h3>
         <p class="muted">Una chapita con QR que muestra la ficha de tu mascota y un botón para escribirte por WhatsApp si alguien la encuentra.</p>
         <a class="card-link" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20una%20placa%20QR%20para%20mi%20mascota." target="_blank" rel="noopener">Quiero la de mi mascota →</a>
@@ -614,22 +430,25 @@
 
   <!-- CÓMO PEDIR -->
   <section id="como-pedir" class="wrap reveal">
-    <div class="section-head">
+    <div class="section-head center">
       <h2>Cómo pedir</h2>
       <p>Simple y por WhatsApp, sin vueltas.</p>
     </div>
-    <div class="grid steps">
-      <div class="card step">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
         <h3>Contanos tu idea</h3>
         <p class="muted">Mandanos por WhatsApp una foto, un dibujo, un logo o una referencia de lo que querés.</p>
       </div>
-      <div class="card step">
+      <div class="step">
+        <div class="step-num">2</div>
         <h3>Te pasamos el presupuesto</h3>
         <p class="muted">Según tamaño, material y colores, te decimos el precio y el tiempo de entrega.</p>
       </div>
-      <div class="card step">
+      <div class="step">
+        <div class="step-num">3</div>
         <h3>Confirmás y lo imprimimos</h3>
-        <p class="muted">Señás el 50% por Mercado Pago, lo fabricamos y abonás el resto al momento de la entrega.</p>
+        <p class="muted">Señás el 50%, lo fabricamos y abonás el resto al momento de la entrega.</p>
       </div>
     </div>
   </section>
@@ -637,28 +456,24 @@
   <!-- PRECIOS -->
   <section id="precios" class="wrap reveal">
     <div class="section-head">
-      <h2>Precios orientativos</h2>
-      <p>Para que tengas una idea antes de consultar.</p>
+      <h2>Precios</h2>
+      <p>Una referencia para que tengas una idea. El precio final siempre lo pasamos a medida.</p>
     </div>
-    <div class="grid">
-      <div class="card">
-        <h3>Impresión 3D</h3>
+    <div class="grid grid-2">
+      <div class="card price-card">
+        <h3>Para arrancar</h3>
         <ul class="price-list">
-          <li>Piezas pequeñas <strong>desde $10.000</strong></li>
+          <li>Llaveros y piezas chicas <strong>desde $10.000</strong></li>
           <li>Placas QR <strong>desde $15.000</strong></li>
           <li>Multicolor <strong>desde $20.000</strong></li>
         </ul>
       </div>
-      <div class="card">
-        <h3>Diseño y modelado</h3>
-        <ul class="price-list">
-          <li>Vectorización <strong>desde $10.000</strong></li>
-          <li>Modelado simple <strong>desde $15.000</strong></li>
-          <li>Placa QR completa <strong>desde $25.000</strong></li>
-        </ul>
+      <div class="card quote-card">
+        <h3>¿Algo más grande o a medida?</h3>
+        <p class="how">Cada trabajo es distinto. El precio se arma según el <strong>tamaño</strong>, el <strong>material</strong>, los <strong>colores</strong> y el <strong>tiempo de impresión</strong>. Contanos qué tenés en mente y te pasamos el número exacto.</p>
+        <a class="btn btn-primary" style="align-self:flex-start" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20un%20presupuesto%20a%20medida." target="_blank" rel="noopener">Pedir mi presupuesto</a>
       </div>
     </div>
-    <p class="note">El precio final depende del tamaño, el material, los colores y el tiempo de impresión.</p>
   </section>
 
   <!-- MATERIALES -->
@@ -667,16 +482,36 @@
       <h2>Materiales</h2>
       <p>Elegimos el material según para qué vas a usar la pieza.</p>
     </div>
-    <div class="grid">
+    <div class="grid grid-3">
       <div class="card">
         <h3>PLA</h3>
-        <p class="muted">Ideal para decoración, llaveros, logos y figuras. Buena terminación y muchos colores.</p>
+        <p class="muted">Ideal para decoración, llaveros, logos y figuras. Buena terminación y muchísimos colores.</p>
         <div class="tags"><span class="tag">Decoración</span><span class="tag">Llaveros</span><span class="tag">Multicolor</span></div>
       </div>
       <div class="card">
         <h3>PETG</h3>
         <p class="muted">Más resistente a golpes, al calor y a la intemperie. Para piezas que se usan todos los días.</p>
-        <div class="tags"><span class="tag">Piezas funcionales</span><span class="tag">Exterior</span><span class="tag">Durabilidad</span></div>
+        <div class="tags"><span class="tag">Funcional</span><span class="tag">Exterior</span><span class="tag">Durabilidad</span></div>
+      </div>
+      <div class="card">
+        <h3>Especiales</h3>
+        <p class="muted">¿Querés que se vea distinto? Tenemos filamentos que brillan en la oscuridad, perfumados y símil madera.</p>
+        <div class="tags"><span class="tag">Luminoso</span><span class="tag">Perfumado</span><span class="tag">Símil madera</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSISTEMA LAMBDA (guiño) -->
+  <section class="wrap reveal">
+    <div class="eco">
+      <div>
+        <h2>Parte de algo más grande</h2>
+        <p>Las páginas de tus QR y esta misma web las diseñamos nosotros, dentro de <strong>LAMBDA</strong>: un ecosistema que también hace sitios web y atención con inteligencia artificial para negocios. Si tu proyecto necesita más que una pieza impresa, lo resolvemos de punta a punta.</p>
+      </div>
+      <div class="eco-brands">
+        <span class="eco-pill"><b>LAMBDA Pages</b><span>Webs y QR</span></span>
+        <span class="eco-pill"><b>LAMBDA Desk</b><span>Atención con IA</span></span>
+        <span class="eco-pill"><b>LAMBDA Design</b><span>Diseño &amp; marca</span></span>
       </div>
     </div>
   </section>
@@ -706,7 +541,7 @@
 
 <!-- FOOTER -->
 <footer>
-  JEAL' Studio 3D · Diseño e impresión 3D · 2026
+  JEAL Studio 3D · Diseño e impresión 3D · 2026
   <div class="footer-hours">Atención: lunes a viernes de 9 a 19 h y sábados de 9 a 13 h<br />Mensajes automáticos las 24 h: escribinos cuando quieras</div>
   <div class="footer-links">
     <a href="https://wa.me/5491161067544" target="_blank" rel="noopener">WhatsApp</a>
@@ -714,37 +549,29 @@
     <a href="https://www.facebook.com/61594212595148" target="_blank" rel="noopener">Facebook</a>
     <a href="mailto:jonatanlandeira@gmail.com">Email</a>
   </div>
+  <div class="footer-eco">Un proyecto del ecosistema LAMBDA</div>
 </footer>
 
-<!-- WHATSAPP FLOTANTE -->
-<a class="wa-float" href="https://wa.me/5491161067544?text=Hola%20JEAL%20Studio%2C%20quiero%20hacer%20un%20pedido%203D." target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
-  <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
-</a>
+<!-- (botón de WhatsApp flotante eliminado: ya está en la barra social de la izquierda) -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 <script>
   // Copiar alias
   const copyBtn = document.getElementById("copy-btn");
   copyBtn.addEventListener("click", async () => {
     const alias = document.getElementById("alias").textContent.trim();
-    try {
-      await navigator.clipboard.writeText(alias);
-    } catch (e) {
+    try { await navigator.clipboard.writeText(alias); }
+    catch (e) {
       const range = document.createRange();
       range.selectNodeContents(document.getElementById("alias"));
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
       document.execCommand("copy");
     }
-    copyBtn.textContent = "¡Copiado!";
-    copyBtn.classList.add("ok");
-    setTimeout(() => {
-      copyBtn.textContent = "Copiar alias";
-      copyBtn.classList.remove("ok");
-    }, 2000);
+    copyBtn.textContent = "¡Copiado!"; copyBtn.classList.add("ok");
+    setTimeout(() => { copyBtn.textContent = "Copiar alias"; copyBtn.classList.remove("ok"); }, 2000);
   });
 
-  // Ajustar el recuadro de Instagram a su contenido, sin espacio en blanco
+  // Ajustar el recuadro de Instagram a su contenido
   const instaFrame = document.getElementById("insta-frame");
   window.addEventListener("message", (e) => {
     let data = e.data;
@@ -757,21 +584,139 @@
     }
   });
 
+  // Logo interactivo con FÍSICA (estilo doodles de Google): tocá y las letras caen, rebotan y giran.
+  (function () {
+    const stage = document.getElementById("hero-stage");
+    const canvas = document.getElementById("logo-canvas");
+    const resetBtn = document.getElementById("logo-reset");
+    const hint = document.getElementById("logo-hint");
+    function fallback() {
+      if (stage && canvas && !stage.querySelector(".fallback")) {
+        const img = new Image(); img.src = "img/logo.png"; img.className = "fallback"; img.alt = "JEAL' Studio 3D";
+        stage.insertBefore(img, canvas); canvas.remove();
+        if (resetBtn) resetBtn.remove(); if (hint) hint.remove();
+      }
+    }
+    if (!stage || !canvas || typeof Matter === "undefined") { fallback(); return; }
+
+    const LW = 1264, LH = 844;
+    // Cada letra es una pieza suelta (como los doodles de Google): caen y rebotan por separado.
+    const PIECES = [
+      { src: "img/l_j.png",      x: 65,   y: 85,  w: 320, h: 464 },
+      { src: "img/l_e.png",      x: 385,  y: 128, w: 263, h: 364 },
+      { src: "img/l_a.png",      x: 648,  y: 169, w: 254, h: 323 },
+      { src: "img/l_l.png",      x: 900,  y: 170, w: 150, h: 319 },
+      { src: "img/l_apos.png",   x: 1054, y: 171, w: 133, h: 154 },
+      { src: "img/l_dl2.png",    x: 179,  y: 568, w: 191, h: 53  },
+      { src: "img/l_studio.png", x: 370,  y: 478, w: 545, h: 150 },
+      { src: "img/l_dr2.png",    x: 908,  y: 558, w: 192, h: 63  },
+      { src: "img/l_dl3.png",    x: 327,  y: 676, w: 181, h: 46  },
+      { src: "img/l_3.png",      x: 508,  y: 610, w: 152, h: 165 },
+      { src: "img/l_d.png",      x: 655,  y: 610, w: 163, h: 164 },
+      { src: "img/l_dr3.png",    x: 803,  y: 668, w: 182, h: 54  }
+    ];
+    const { Engine, Render, Runner, Bodies, Body, Composite, Mouse, MouseConstraint, Events, Sleeping } = Matter;
+    let engine, render, runner, bodies = [], activated = false, looping = false;
+    function startLoop() { if (looping || !render) return; looping = true; Runner.run(runner, engine); Render.run(render); }
+    function stopLoop() { if (!looping) return; looping = false; Runner.stop(runner); Render.stop(render); Render.world(render); }
+
+    function build() {
+      const r = stage.getBoundingClientRect();
+      const W = Math.max(1, r.width), H = Math.max(1, r.height);
+      // El logo ocupa ~86% del ancho y se apoya ARRIBA, dejando lugar abajo
+      // y a los costados para que las letras caigan y reboten en las paredes.
+      let scale = (W * 0.86) / LW;
+      if (LH * scale > H * 0.58) scale = (H * 0.58) / LH;
+      const offX = (W - LW * scale) / 2, offY = H * 0.04;
+      engine = Engine.create(); engine.gravity.y = 1; engine.enableSleeping = true;
+      render = Render.create({ canvas, engine, options: { width: W, height: H, pixelRatio: window.devicePixelRatio || 1, background: "transparent", wireframes: false } });
+      const t = 400, wopt = { isStatic: true, restitution: 0.68, friction: 0.02, render: { visible: false } };
+      const walls = [
+        Bodies.rectangle(W / 2, H + t / 2, W * 3, t, wopt),          // piso
+        Bodies.rectangle(-t / 2, H / 2, t, H * 5, wopt),             // pared izquierda
+        Bodies.rectangle(W + t / 2, H / 2, t, H * 5, wopt),          // pared derecha
+        Bodies.rectangle(W / 2, -t / 2 - H * 2, W * 3, t, wopt)      // techo (bien arriba)
+      ];
+      bodies = PIECES.map(p => {
+        const bw = p.w * scale, bh = p.h * scale;
+        const cx = offX + (p.x + p.w / 2) * scale, cy = offY + (p.y + p.h / 2) * scale;
+        const b = Bodies.rectangle(cx, cy, bw, bh, {
+          isStatic: true, restitution: 0.62, friction: 0.05, frictionAir: 0.008,
+          chamfer: { radius: Math.min(bw, bh) * 0.12 },
+          render: { sprite: { texture: p.src, xScale: scale, yScale: scale } }
+        });
+        b._home = { x: cx, y: cy };
+        return b;
+      });
+      Composite.add(engine.world, [...walls, ...bodies]);
+
+      const mouse = Mouse.create(canvas);
+      mouse.pixelRatio = window.devicePixelRatio || 1;
+      // dejar que la rueda del mouse siga scrolleando la página
+      ["wheel", "mousewheel", "DOMMouseScroll"].forEach(ev => { if (mouse.mousewheel) canvas.removeEventListener(ev, mouse.mousewheel); });
+      const mc = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
+      Composite.add(engine.world, mc);
+      Events.on(mc, "mousedown", () => { bodies.forEach(b => Sleeping.set(b, false)); activate(); startLoop(); });
+
+      runner = Runner.create();
+      Events.on(engine, "afterUpdate", () => { if (activated && looping && !bodies.some(b => !b.isSleeping)) stopLoop(); });
+      Render.world(render); // primer dibujo (puede salir en blanco si los sprites aún no cargaron)
+      // Las texturas de los sprites cargan async: cuando TODAS estén listas,
+      // redibujamos el logo en reposo para que no quede en blanco antes de tocarlo.
+      let loaded = 0;
+      PIECES.forEach(p => {
+        const im = new Image();
+        const done = () => { if (++loaded >= PIECES.length && !looping && render) requestAnimationFrame(() => { if (!looping && render) Render.world(render); }); };
+        im.onload = done; im.onerror = done; im.src = p.src;
+      });
+    }
+
+    function activate() {
+      if (activated) return; activated = true;
+      bodies.forEach(b => {
+        Body.setStatic(b, false); Sleeping.set(b, false);
+        Body.setVelocity(b, { x: (Math.random() - 0.5) * 12, y: -(3 + Math.random() * 4.5) });
+        Body.setAngularVelocity(b, (Math.random() - 0.5) * 0.42);
+      });
+      if (hint) hint.style.opacity = "0";
+      if (resetBtn) resetBtn.classList.add("show");
+      startLoop();
+    }
+    function reset() {
+      activated = false; stopLoop();
+      bodies.forEach(b => {
+        Body.setStatic(b, true);
+        Body.setPosition(b, b._home); Body.setAngle(b, 0);
+        Body.setVelocity(b, { x: 0, y: 0 }); Body.setAngularVelocity(b, 0);
+      });
+      if (render) Render.world(render);
+      if (hint) hint.style.opacity = "0.7";
+      if (resetBtn) resetBtn.classList.remove("show");
+    }
+    function teardown() {
+      if (!render) return;
+      try { Render.stop(render); Runner.stop(runner); Composite.clear(engine.world, false); Engine.clear(engine); } catch (e) {}
+      looping = false; activated = false;
+    }
+
+    if (resetBtn) resetBtn.addEventListener("click", reset);
+    canvas.addEventListener("pointerdown", activate);
+
+    let rt; window.addEventListener("resize", () => {
+      clearTimeout(rt); rt = setTimeout(() => { teardown(); build(); }, 250);
+    });
+
+    try { build(); } catch (e) { fallback(); }
+  })();
+
   // Aparición suave de las secciones
   const items = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("visible");
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
     items.forEach((el) => io.observe(el));
-  } else {
-    items.forEach((el) => el.classList.add("visible"));
-  }
+  } else { items.forEach((el) => el.classList.add("visible")); }
 </script>
 
 </body>
