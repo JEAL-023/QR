@@ -604,6 +604,7 @@
     ovTitle.textContent = "GAME OVER";
     ovText.innerHTML = "Puntaje: <b>" + fs + "</b> &nbsp;·&nbsp; Récord: <b>" + best + "</b>";
     ovForm.style.display = "flex";
+    if (btnSave) { btnSave.disabled = false; btnSave.textContent = "Guardar"; }
     btnStart.textContent = "↻ Jugar de nuevo";
     ovName.value = localStorage.getItem("jeal_name") || "";
     overlay.classList.add("show");
@@ -613,7 +614,8 @@
       if (fs > 0 && fs > topScore) {
         var nm = localStorage.getItem("jeal_name") || "";
         var waMsg = encodeURIComponent("¡Hola! Quedé #1 en Patrulla 3D" + (nm ? " (ranking: " + nm + ")" : "") + " y quiero reclamar mi cupón 🎁");
-        elClaim.innerHTML = '<h4>🏆 ¡Quedaste #1 del ranking!</h4>' +
+        elClaim.innerHTML = '<button type="button" class="claim-x" aria-label="Cerrar" onclick="document.getElementById(\'game-claim\').hidden=true">✕</button>' +
+          '<h4>🏆 ¡Quedaste #1 del ranking!</h4>' +
           '<p>Reclamá tu cupón escribiéndonos desde tu cuenta, así validamos que sos vos:</p>' +
           '<div class="claim-btns">' +
             '<a href="https://instagram.com/jealstudio3d" target="_blank" rel="noopener">📷 Instagram</a>' +

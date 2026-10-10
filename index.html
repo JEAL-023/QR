@@ -266,7 +266,7 @@
   .game-hud .box { background: rgba(10,8,20,0.55); border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; }
   .game-hud #game-mute { pointer-events: auto; cursor: pointer; font-size: 0.85rem; line-height: 1; }
   #game-lives { letter-spacing: 2px; color: var(--pink); }
-  .game-overlay { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 14px; background: rgba(11,10,15,0.82); }
+  .game-overlay { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: safe center; gap: 9px; text-align: center; padding: 14px; background: rgba(11,10,15,0.85); overflow-y: auto; }
   .game-overlay.show { display: flex; }
   .game-overlay h3 { font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem,3.5vw,1.9rem); letter-spacing: 0.04em; background: linear-gradient(120deg,var(--violet-soft),var(--pink)); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .game-overlay p { font-size: 0.9rem; color: var(--muted); max-width: 440px; margin: 0; }
@@ -301,7 +301,9 @@
   .rank-tab.active { background: linear-gradient(120deg, rgba(155,91,255,0.25), rgba(255,79,216,0.18)); color: #fff; border-color: var(--violet); }
   .rank-prize { margin-top: 12px; font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
   .rank-prize b { color: var(--violet-soft); }
-  .game-claim { background: linear-gradient(120deg, rgba(255,211,77,0.14), rgba(255,79,216,0.12)); border: 1px solid rgba(255,211,77,0.42); border-radius: 12px; padding: 12px 14px; max-width: 430px; }
+  .game-claim { position: relative; background: linear-gradient(120deg, rgba(255,211,77,0.14), rgba(255,79,216,0.12)); border: 1px solid rgba(255,211,77,0.42); border-radius: 12px; padding: 12px 14px 12px; max-width: 430px; }
+  .claim-x { position: absolute; top: 5px; right: 7px; background: none; border: none; color: var(--muted); font-size: 0.9rem; line-height: 1; cursor: pointer; padding: 3px 5px; border-radius: 6px; }
+  .claim-x:hover { color: #fff; background: rgba(255,255,255,0.08); }
   .game-claim h4 { font-family: var(--display); font-size: 1rem; margin-bottom: 4px; color: var(--fg); }
   .game-claim p { font-size: 0.84rem; color: var(--muted); margin: 0 0 9px; }
   .game-claim .claim-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
@@ -833,8 +835,11 @@
 <script>
   window.JEAL_LB_URL = "https://yeooahkzxdsjwcjkffea.supabase.co/rest/v1/jeal_game_scores";
   window.JEAL_LB_KEY = "sb_publishable_-H44-c_DqBImMPI8_vNarA_2PztfN3_";
+  window.JEAL_STUDIO_BOT = "https://yeooahkzxdsjwcjkffea.supabase.co/functions/v1/studio-web";
 </script>
-<script src="js/game.js?v=8" defer></script>
+<script src="js/game.js?v=9" defer></script>
+<!-- Widget de chat del estudio (bot 3D, aislado del de LAMBDA). Degrada a WhatsApp si el endpoint no está. -->
+<script src="js/chat.js?v=2" defer></script>
 
 </body>
 </html>
