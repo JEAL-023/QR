@@ -69,6 +69,8 @@
   }
 
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+  /* Ritmo vertical uniforme entre secciones (armonía) */
+  section.wrap { padding-block: 46px; }
 
   /* ---------- Barra superior ---------- */
   .topbar {
@@ -115,7 +117,7 @@
   .social-rail svg { width: 20px; height: 20px; }
 
   /* ---------- Hero (split) ---------- */
-  .hero { padding: 64px 0 44px; }
+  .hero { padding: 64px 0 46px; }
   .hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; }
 
   .badge {
@@ -219,7 +221,7 @@
   .tag { padding: 5px 11px; border-radius: 8px; font-size: 0.82rem; background: rgba(155, 91, 255, 0.14); color: var(--violet-soft); }
 
   /* ---------- Ecosistema LAMBDA ---------- */
-  .eco { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; padding: 36px; border-radius: 22px; border: 1px solid var(--line); background: var(--card); }
+  .eco { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: center; padding: 36px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); }
   .eco h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); }
   .eco p { color: var(--muted); margin-top: 10px; }
   .eco-brands { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -228,14 +230,14 @@
   .eco-pill span { color: var(--muted); font-size: 0.82rem; }
 
   /* ---------- Pago ---------- */
-  .pay { text-align: center; padding: 40px 24px; border-radius: 22px; border: 1px solid var(--line); background: radial-gradient(80% 120% at 50% 0%, rgba(155, 91, 255, 0.16), transparent 70%), var(--card); }
+  .pay { text-align: center; padding: 40px 24px; border-radius: var(--radius); border: 1px solid var(--line); background: radial-gradient(80% 120% at 50% 0%, rgba(155, 91, 255, 0.16), transparent 70%), var(--card); }
   .alias-row { margin: 18px auto 8px; display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
   .alias { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 1.15rem; padding: 11px 18px; border-radius: 10px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(155, 91, 255, 0.5); user-select: all; }
   .copy-btn { padding: 11px 18px; font-size: 0.92rem; }
   .copy-btn.ok { border-color: var(--wa); background: rgba(37, 211, 102, 0.15); }
 
   /* ---------- CTA final ---------- */
-  .cta { text-align: center; padding: 56px 24px; border-radius: 24px; background: linear-gradient(120deg, rgba(155, 91, 255, 0.24), rgba(255, 79, 216, 0.18)); border: 1px solid var(--line); }
+  .cta { text-align: center; padding: 56px 24px; border-radius: var(--radius); background: linear-gradient(120deg, rgba(155, 91, 255, 0.24), rgba(255, 79, 216, 0.18)); border: 1px solid var(--line); }
   .cta p { color: var(--muted); margin: 12px auto 26px; max-width: 460px; }
 
   /* ---------- Footer ---------- */
@@ -252,7 +254,7 @@
   .wa-float svg { width: 32px; height: 32px; }
 
   /* ---------- Juego 8-bit "Patrulla 3D" ---------- */
-  .game-band { position: relative; margin: 76px 0; padding: 42px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(155,91,255,0.07), rgba(255,79,216,0.04)); }
+  .game-band { position: relative; margin: 46px 0; padding: 44px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(155,91,255,0.07), rgba(255,79,216,0.04)); }
   .game-inner { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: stretch; }
   .game-head { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
   .game-head h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.4rem,3vw,2rem); letter-spacing: -0.02em; }
