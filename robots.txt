@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+# Fichas de mascotas con datos de sus dueños: no van a Google
+Disallow: /Mascotas/
+
+Sitemap: https://www.jealstudio3d.com.ar/sitemap.xml
