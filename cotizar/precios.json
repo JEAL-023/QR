@@ -1,5 +1,5 @@
 {
-  "_nota": "Fuente única de precios de JEAL Studio 3D. La usan el presupuestador (fabrica.py) y el cotizador de la web (se publica con: python fabrica.py publicar-precios). Calibrada con el kit de comercios del 19/10/2026.",
+  "_nota": "Fuente única de precios de JEAL Studio 3D. La usan la fábrica (fabrica.py), el cotizador de la web (jealstudio3d.com.ar/cotizar) y el bot del chat. Después de editar: python fabrica.py publicar-precios y subir la web.",
   "actualizado": "2026-10-27",
   "costos": {
     "por_hora_maquina": 1500,
@@ -12,6 +12,8 @@
       "PLA": 1.24,
       "PETG": 1.27
     },
+    "merma": 0.15,
+    "_merma": "Margen por reimpresiones, piezas que salen mal y pruebas: se suma al costo de material y máquina.",
     "multicolor": {
       "_nota": "Cada color extra suma purga del AMS (material) y cambios de filamento (tiempo).",
       "gramos_extra_por_color": 0.15,
@@ -19,7 +21,7 @@
     }
   },
   "precio": {
-    "_nota": "precio por unidad = (costo x multiplicador + cargo fijo) x descuento por cantidad. Con 2,5 y $2.250 da los precios del kit (topper $6.000, llavero QR x50 $2.500).",
+    "_nota": "unidad = (costo con merma x multiplicador + cargo fijo) x descuento por cantidad + insumos del producto. total = unidades + diseño (+ urgente) y se le suma la financiación de las cuotas.",
     "multiplicador": 2.5,
     "cargo_fijo_por_unidad": 2250,
     "descuentos_por_cantidad": [
@@ -56,28 +58,45 @@
       "redondeo": 500
     }
   },
+  "financiacion": {
+    "costo_cuotas": 0.218,
+    "_nota": "Ualá Bis: 6 cuotas sin interés le cuestan al vendedor 18% + IVA (~21,8%). Mismo criterio que LAMBDA: va incluido en el precio de lista (precio / (1 - 0,218)), así cualquier forma de pago deja el mismo margen.",
+    "texto": "Hasta 6 cuotas sin interés con tarjeta."
+  },
+  "entrega": {
+    "horas_maquina_por_dia": 8,
+    "dias_base": 2,
+    "_nota": "Una sola impresora: hasta 8 h de máquina entra en 48 h; si el pedido es más grande se suman días hábiles."
+  },
   "diseno": {
+    "valor_hora": 20000,
+    "_nota": "Modelado y adaptaciones se cobran por hora de trabajo a valor de mercado, como si lo hiciera una persona (lo haga Jonatan o la fábrica). 'precio' = horas x valor_hora (lo recalcula publicar-precios).",
     "listo": {
       "nombre": "Tengo el archivo listo para imprimir (STL o 3MF)",
+      "horas": 0,
       "precio": 0
     },
     "texto": {
-      "nombre": "Solo un nombre o texto (lo armamos con una plantilla)",
-      "precio": 0
+      "nombre": "Un nombre o texto (lo armamos sobre una plantilla)",
+      "horas": 0.25,
+      "precio": 5000
     },
     "logo": {
       "nombre": "Tengo un logo o imagen para adaptar",
-      "precio": 10000,
+      "horas": 1,
+      "precio": 20000,
       "desde": true
     },
     "simple": {
       "nombre": "Hay que modelar algo simple (con medidas o fotos)",
-      "precio": 15000,
+      "horas": 2,
+      "precio": 40000,
       "desde": true
     },
     "complejo": {
       "nombre": "Diseño desde cero o con muchos detalles",
-      "precio": 25000,
+      "horas": 5,
+      "precio": 100000,
       "desde": true
     }
   },
@@ -93,7 +112,8 @@
       "tam_defecto": 50,
       "colores_defecto": 2,
       "diseno_defecto": "texto",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 250
     },
     "llavero_qr": {
       "nombre": "Llavero con QR (Instagram, WhatsApp, web)",
@@ -106,7 +126,8 @@
       "tam_defecto": 52,
       "colores_defecto": 2,
       "diseno_defecto": "texto",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 250
     },
     "placa_qr": {
       "nombre": "Placa o cartel con QR (local, mesa, mascota)",
@@ -119,7 +140,8 @@
       "tam_defecto": 100,
       "colores_defecto": 2,
       "diseno_defecto": "logo",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 400
     },
     "topper": {
       "nombre": "Topper para torta (nombre, número o frase)",
@@ -132,7 +154,8 @@
       "tam_defecto": 150,
       "colores_defecto": 1,
       "diseno_defecto": "texto",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 200
     },
     "cortante": {
       "nombre": "Cortante de galletitas o fondant",
@@ -145,7 +168,8 @@
       "tam_defecto": 80,
       "colores_defecto": 1,
       "diseno_defecto": "logo",
-      "precio_min_unidad": 6000
+      "precio_min_unidad": 6000,
+      "insumos": 200
     },
     "cartel_logo": {
       "nombre": "Logo o cartel en relieve",
@@ -158,7 +182,8 @@
       "tam_defecto": 200,
       "colores_defecto": 2,
       "diseno_defecto": "logo",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 600
     },
     "figura": {
       "nombre": "Figura, miniatura o adorno",
@@ -171,7 +196,8 @@
       "tam_defecto": 80,
       "colores_defecto": 1,
       "diseno_defecto": "listo",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 500
     },
     "pieza": {
       "nombre": "Repuesto o pieza funcional",
@@ -184,15 +210,16 @@
       "tam_defecto": 60,
       "colores_defecto": 1,
       "diseno_defecto": "simple",
-      "precio_min_unidad": 0
+      "precio_min_unidad": 0,
+      "insumos": 400
     }
   },
   "aclaraciones": [
     "Es un precio aproximado y orientativo, no un presupuesto final.",
     "El valor final se confirma cuando vemos el archivo o la idea: puede cambiar por el tamaño real, el material, los soportes, los colores o las adaptaciones del diseño.",
-    "El modelado, la vectorización y las adaptaciones se cotizan aparte cuando hacen falta.",
+    "El modelado y las adaptaciones se cobran por hora de trabajo; si hace falta más de lo estimado, se avisa antes.",
     "La entrega o el envío no están incluidos y se coordinan aparte.",
-    "Para arrancar el pedido se pide una seña del 50%."
+    "Hasta 6 cuotas sin interés con tarjeta. Para arrancar el pedido se pide una seña del 50%."
   ],
   "contacto": {
     "whatsapp": "5491161067544",

@@ -142,7 +142,7 @@
           </select>
         </div>
         <div>
-          <label for="diseno">Diseño</label>
+          <label for="diseno">Modelado / diseño</label>
           <select id="diseno"></select>
         </div>
       </div>
@@ -192,20 +192,27 @@ function descuento(cant) {
   return f;
 }
 
-function cotizar(gramos, minutos, cant, colores, material, diseno, urgente, minUnidad) {
+function entrega(horasTotal, urgente) {
+  if (urgente) return "24-48 h (urgente)";
+  const e = P.entrega;
+  return horasTotal <= e.horas_maquina_por_dia ? "48 h" : `aprox. ${e.dias_base + Math.ceil(horasTotal / e.horas_maquina_por_dia)} días hábiles`;
+}
+
+function cotizar(gramos, minutos, cant, colores, material, diseno, urgente, minUnidad, insumos) {
   const c = P.costos, pr = P.precio, extra = Math.max(0, colores - 1);
   const g = gramos * (1 + c.multicolor.gramos_extra_por_color * extra);
   const m = minutos * (1 + c.multicolor.tiempo_extra_por_color * extra);
-  const costo = (m / 60) * c.por_hora_maquina + g * c.por_gramo * (c.factor_material[material] || 1);
+  const costo = ((m / 60) * c.por_hora_maquina + g * c.por_gramo * (c.factor_material[material] || 1)) * (1 + c.merma);
   let unidad = (costo * pr.multiplicador + pr.cargo_fijo_por_unidad) * descuento(cant);
-  unidad = Math.max(unidad, minUnidad || 0);
+  unidad = Math.max(unidad, minUnidad || 0) + (insumos || 0);
   const d = P.diseno[diseno];
   let total = unidad * cant + d.precio;
   if (urgente) total *= 1 + pr.recargo_urgente;
+  total /= 1 - P.financiacion.costo_cuotas;
   total = Math.max(total, pr.pedido_minimo);
   const r = pr.rango;
   return {
-    g, m, unidad, total, diseno: d,
+    g, m, unidad, total, diseno: d, entrega: entrega((m * cant) / 60, urgente),
     desde: Math.floor((total * r.abajo) / r.redondeo) * r.redondeo,
     hasta: Math.ceil((total * r.arriba) / r.redondeo) * r.redondeo,
   };
@@ -273,7 +280,7 @@ function calcular() {
   $("bloque-tam").hidden = !!estado.archivo;
 
   const base = estado.archivo ? materialDeArchivo(estado.archivo, material) : estimarMaterial(prod, tam);
-  const r = cotizar(base.gramos, base.minutos, cant, colores, material, diseno, urgente, prod.precio_min_unidad);
+  const r = cotizar(base.gramos, base.minutos, cant, colores, material, diseno, urgente, prod.precio_min_unidad, prod.insumos);
 
   $("r-producto").textContent = prod.nombre + (estado.archivo ? " · según tu archivo" : "");
   $("r-precio").textContent = `${pesos(r.desde)} a ${pesos(r.hasta)}`;
@@ -285,8 +292,9 @@ function calcular() {
   $("r-detalle").innerHTML = [
     ["Tamaño", medidas],
     ["Material", `${material} · ${colores} color${colores > 1 ? "es" : ""}`],
-    ["Diseño", r.diseno.precio ? `${r.diseno.desde ? "desde " : ""}${pesos(r.diseno.precio)}` : "incluido"],
-    ["Entrega", urgente ? "urgente (24-48 h)" : "a coordinar"],
+    ["Modelado", r.diseno.precio ? `${r.diseno.desde ? "desde " : ""}${pesos(r.diseno.precio)} (${String(r.diseno.horas).replace(".", ",")} h)` : "no hace falta"],
+    ["Plazo estimado", r.entrega],
+    ["Pago", "hasta 6 cuotas sin interés"],
   ].map(([k, v]) => `<li><span>${k}</span><strong>${v}</strong></li>`).join("");
 
   const msg = [
@@ -335,6 +343,7 @@ fetch("precios.json", { cache: "no-cache" })
       .map(([k, p]) => `<button type="button" class="producto" data-clave="${k}">${p.nombre}</button>`).join("");
     document.querySelectorAll(".producto").forEach((b) => b.addEventListener("click", () => elegir(b.dataset.clave)));
     $("diseno").innerHTML = Object.entries(P.diseno)
+      .filter(([, d]) => d && typeof d === "object" && d.nombre)
       .map(([k, d]) => `<option value="${k}">${d.nombre}${d.precio ? ` (${d.desde ? "desde " : ""}${pesos(d.precio)})` : ""}</option>`).join("");
     $("r-aclaraciones").innerHTML = P.aclaraciones.map((a) => `<li>${a}</li>`).join("");
     const pedido = new URLSearchParams(location.search).get("producto");
