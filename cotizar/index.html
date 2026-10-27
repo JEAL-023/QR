@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cotizador · JEAL Studio 3D</title>
+<meta name="description" content="Calculá un precio aproximado de tu pieza impresa en 3D: llaveros, placas QR, toppers, cortantes, logos, figuras y repuestos. Consultá por WhatsApp." />
+<meta name="theme-color" content="#0b0a0f" />
+<meta property="og:title" content="Cotizador · JEAL Studio 3D" />
+<meta property="og:description" content="Calculá en un minuto cuánto sale tu pieza impresa en 3D." />
+<meta property="og:image" content="https://www.jealstudio3d.com.ar/og-image.png" />
+<meta property="og:url" content="https://www.jealstudio3d.com.ar/cotizar/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0a0f; --fg: #fff; --muted: #b8b8c9; --violet: #9b5bff; --violet-soft: #c7a3ff;
+    --pink: #ff4fd8; --line: rgba(155, 91, 255, 0.25); --card: rgba(255, 255, 255, 0.035); --wa: #25d366;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: radial-gradient(60% 40% at 50% 0%, rgba(155, 91, 255, 0.25), transparent 70%), var(--bg);
+    background-attachment: fixed;
+    color: var(--fg); line-height: 1.5; min-height: 100vh;
+  }
+  a { color: var(--violet-soft); }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px 80px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  header img { height: 46px; mix-blend-mode: lighten; }
+  header a.volver { text-decoration: none; color: var(--muted); font-size: 0.92rem; }
+  h1 {
+    font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 800; letter-spacing: -0.03em; margin-top: 18px;
+    background: linear-gradient(120deg, #fff 30%, var(--violet-soft), var(--pink));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .intro { color: var(--muted); margin: 8px 0 28px; max-width: 620px; }
+  .grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 22px; align-items: start; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .paso { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet-soft); margin: 18px 0 10px; }
+  .paso:first-child { margin-top: 0; }
+  .productos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .producto {
+    text-align: left; padding: 11px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.03); color: var(--fg); font: inherit; font-size: 0.9rem; cursor: pointer;
+  }
+  .producto:hover { border-color: var(--violet); }
+  .producto.activo { border-color: var(--violet); background: rgba(155, 91, 255, 0.18); }
+  .producto small { display: block; color: var(--muted); font-size: 0.76rem; }
+  label { display: block; font-size: 0.9rem; margin: 12px 0 6px; color: #e6e6f0; }
+  .fila { display: flex; gap: 12px; align-items: center; }
+  input[type=range] { flex: 1; accent-color: var(--violet); }
+  .valor { min-width: 70px; text-align: right; font-weight: 600; }
+  select, input[type=number] {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
+    background: #15131c; color: var(--fg); font: inherit;
+  }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .check { display: flex; gap: 8px; align-items: center; margin-top: 14px; font-size: 0.9rem; color: #e6e6f0; }
+  .check input { accent-color: var(--violet); width: 18px; height: 18px; }
+  .archivo {
+    border: 1px dashed rgba(199, 163, 255, 0.5); border-radius: 12px; padding: 14px; font-size: 0.88rem; color: var(--muted);
+  }
+  .archivo input { margin-top: 8px; color: var(--muted); max-width: 100%; }
+  .archivo .ok { color: #9ef0b4; margin-top: 6px; }
+  .resultado { position: sticky; top: 18px; }
+  .precio { font-size: clamp(1.7rem, 5vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 2px; }
+  .sub { color: var(--muted); font-size: 0.88rem; }
+  .detalle { list-style: none; margin: 16px 0; font-size: 0.88rem; color: #dcdce8; }
+  .detalle li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
+  .aviso { font-size: 0.8rem; color: var(--muted); margin-top: 14px; }
+  .aviso li { margin: 0 0 6px 16px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 16px;
+    padding: 14px; border-radius: 14px; border: none; font: inherit; font-weight: 700; color: #fff; cursor: pointer;
+    background: linear-gradient(120deg, var(--violet), var(--pink)); text-decoration: none;
+  }
+  .btn svg { width: 20px; height: 20px; }
+  .destacado {
+    margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: rgba(255, 79, 216, 0.08);
+    border: 1px solid rgba(255, 79, 216, 0.3); font-size: 0.82rem; color: #f3d6ee;
+  }
+  .barra { display: none; }
+  @media (max-width: 820px) {
+    .grid { grid-template-columns: 1fr; }
+    .resultado { position: static; scroll-margin-top: 12px; }
+    .barra {
+      display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 10;
+      align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-radius: 14px;
+      background: rgba(20, 16, 30, 0.92); border: 1px solid var(--line); backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); color: var(--fg); text-decoration: none; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+    .barra strong { font-size: 1.05rem; }
+    .barra span { font-size: 0.82rem; color: var(--violet-soft); font-weight: 600; white-space: nowrap; }
+    .wrap { padding-bottom: 110px; }
+  }
+  @media (max-width: 420px) { .productos { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a href="/" aria-label="Volver al inicio"><img src="/img/logo.jpg" alt="JEAL' Studio 3D" /></a>
+    <a class="volver" href="/">← Volver al inicio</a>
+  </header>
+
+  <h1>Calculá tu precio</h1>
+  <p class="intro">Elegí qué querés imprimir y te mostramos un precio aproximado al instante. Después nos escribís por WhatsApp y te confirmamos el valor final.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="paso">1 · ¿Qué querés?</div>
+      <div class="productos" id="productos"></div>
+
+      <div class="paso">2 · Detalles</div>
+      <div id="bloque-tam">
+        <label for="tam">Tamaño (lado más largo)</label>
+        <div class="fila"><input type="range" id="tam" /><span class="valor" id="tam-valor"></span></div>
+      </div>
+
+      <div class="dos">
+        <div>
+          <label for="cantidad">Cantidad</label>
+          <input type="number" id="cantidad" min="1" max="1000" value="1" />
+        </div>
+        <div>
+          <label for="colores">Colores</label>
+          <select id="colores">
+            <option value="1">1 color</option><option value="2">2 colores</option>
+            <option value="3">3 colores</option><option value="4">4 colores</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dos">
+        <div>
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="PLA">PLA (decoración, uso general)</option>
+            <option value="PETG">PETG (más resistente, exterior)</option>
+          </select>
+        </div>
+        <div>
+          <label for="diseno">Diseño</label>
+          <select id="diseno"></select>
+        </div>
+      </div>
+
+      <label class="check"><input type="checkbox" id="urgente" /> Lo necesito con urgencia (24-48 h)</label>
+
+      <div class="paso">3 · ¿Ya tenés el archivo? (opcional)</div>
+      <div class="archivo">
+        Si tenés el modelo en <strong>STL</strong>, subilo y calculamos con sus medidas reales. El archivo no se envía a ningún lado: se lee solo en tu dispositivo.
+        <br /><input type="file" id="stl" accept=".stl" />
+        <div class="ok" id="stl-info" hidden></div>
+      </div>
+    </div>
+
+    <a class="barra" href="#resultado" id="barra"><strong id="barra-precio">—</strong><span>Ver y consultar ↓</span></a>
+
+    <div class="card resultado" id="resultado" aria-live="polite">
+      <div class="sub" id="r-producto"></div>
+      <div class="precio" id="r-precio">—</div>
+      <div class="sub" id="r-unidad"></div>
+      <ul class="detalle" id="r-detalle"></ul>
+      <a class="btn" id="r-wa" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>
+        Consultar este precio por WhatsApp
+      </a>
+      <div class="destacado">Precio aproximado: el valor final lo confirmamos al ver tu idea o tu archivo.</div>
+      <ul class="aviso" id="r-aclaraciones"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// Misma fórmula que el presupuestador de la fábrica (JEAL 3D\fabrica\jeal3d\cotizar.py). Los números vienen de precios.json.
+let P = null;
+const estado = { producto: null, archivo: null };
+const $ = (id) => document.getElementById(id);
+const pesos = (n) => "$" + Math.round(n).toLocaleString("es-AR");
+
+function estimarMaterial(prod, tam) {
+  const escala = Math.pow(tam / prod.tam_ref, prod.exponente);
+  return { gramos: prod.gramos_ref * escala, minutos: Math.max(8, prod.minutos_ref * escala) };
+}
+
+function descuento(cant) {
+  let f = 1;
+  for (const t of P.precio.descuentos_por_cantidad) if (cant >= t.desde) f = t.factor;
+  return f;
+}
+
+function cotizar(gramos, minutos, cant, colores, material, diseno, urgente, minUnidad) {
+  const c = P.costos, pr = P.precio, extra = Math.max(0, colores - 1);
+  const g = gramos * (1 + c.multicolor.gramos_extra_por_color * extra);
+  const m = minutos * (1 + c.multicolor.tiempo_extra_por_color * extra);
+  const costo = (m / 60) * c.por_hora_maquina + g * c.por_gramo * (c.factor_material[material] || 1);
+  let unidad = (costo * pr.multiplicador + pr.cargo_fijo_por_unidad) * descuento(cant);
+  unidad = Math.max(unidad, minUnidad || 0);
+  const d = P.diseno[diseno];
+  let total = unidad * cant + d.precio;
+  if (urgente) total *= 1 + pr.recargo_urgente;
+  total = Math.max(total, pr.pedido_minimo);
+  const r = pr.rango;
+  return {
+    g, m, unidad, total, diseno: d,
+    desde: Math.floor((total * r.abajo) / r.redondeo) * r.redondeo,
+    hasta: Math.ceil((total * r.arriba) / r.redondeo) * r.redondeo,
+  };
+}
+
+// --- Lectura de STL en el navegador (volumen, superficie y medidas)
+function leerSTL(buffer) {
+  const dv = new DataView(buffer);
+  const tris = [];
+  const binario = buffer.byteLength >= 84 && 84 + dv.getUint32(80, true) * 50 === buffer.byteLength;
+  if (binario) {
+    const n = dv.getUint32(80, true);
+    for (let i = 0; i < n; i++) {
+      const o = 84 + i * 50 + 12, t = [];
+      for (let v = 0; v < 3; v++) t.push([dv.getFloat32(o + v * 12, true), dv.getFloat32(o + v * 12 + 4, true), dv.getFloat32(o + v * 12 + 8, true)]);
+      tris.push(t);
+    }
+  } else {
+    const txt = new TextDecoder().decode(buffer);
+    const vs = [...txt.matchAll(/vertex\s+([-\d.eE+]+)\s+([-\d.eE+]+)\s+([-\d.eE+]+)/g)].map((m) => [+m[1], +m[2], +m[3]]);
+    for (let i = 0; i + 2 < vs.length; i += 3) tris.push([vs[i], vs[i + 1], vs[i + 2]]);
+  }
+  if (!tris.length) throw new Error("vacío");
+  let vol = 0, area = 0;
+  const min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
+  for (const [a, b, c] of tris) {
+    vol += (a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0]) + a[2] * (b[0] * c[1] - b[1] * c[0])) / 6;
+    const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], w = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+    area += Math.hypot(u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]) / 2;
+    for (const p of [a, b, c]) for (let k = 0; k < 3; k++) { min[k] = Math.min(min[k], p[k]); max[k] = Math.max(max[k], p[k]); }
+  }
+  return { volumen: Math.abs(vol), area, medidas: max.map((x, k) => x - min[k]) };
+}
+
+function materialDeArchivo(info, material) {
+  // Igual que estimar_sin_laminar(): paredes y tapas macizas + 15 % de relleno, ~22 g por hora.
+  const dens = P.costos.densidad_g_cm3[material] || 1.24;
+  const cascara = Math.min(info.volumen, info.area * 0.9);
+  const gramos = ((cascara + (info.volumen - cascara) * 0.15) / 1000) * dens;
+  return { gramos, minutos: Math.max(8, (gramos / 22) * 60) };
+}
+
+// --- Interfaz
+function elegir(clave) {
+  estado.producto = clave;
+  const prod = P.productos[clave];
+  document.querySelectorAll(".producto").forEach((b) => b.classList.toggle("activo", b.dataset.clave === clave));
+  const tam = $("tam");
+  tam.min = prod.tam_min; tam.max = prod.tam_max; tam.step = prod.tam_max > 120 ? 5 : 1; tam.value = prod.tam_defecto;
+  $("colores").value = String(prod.colores_defecto);
+  if (!estado.archivo) $("diseno").value = prod.diseno_defecto;
+  calcular();
+}
+
+function calcular() {
+  if (!P || !estado.producto) return;
+  const prod = P.productos[estado.producto];
+  const cant = Math.max(1, Math.min(1000, parseInt($("cantidad").value || "1", 10)));
+  const colores = parseInt($("colores").value, 10);
+  const material = $("material").value;
+  const diseno = $("diseno").value;
+  const urgente = $("urgente").checked;
+  const tam = parseFloat($("tam").value);
+  $("tam-valor").textContent = (tam / 10).toLocaleString("es-AR", { maximumFractionDigits: 1 }) + " cm";
+  $("bloque-tam").hidden = !!estado.archivo;
+
+  const base = estado.archivo ? materialDeArchivo(estado.archivo, material) : estimarMaterial(prod, tam);
+  const r = cotizar(base.gramos, base.minutos, cant, colores, material, diseno, urgente, prod.precio_min_unidad);
+
+  $("r-producto").textContent = prod.nombre + (estado.archivo ? " · según tu archivo" : "");
+  $("r-precio").textContent = `${pesos(r.desde)} a ${pesos(r.hasta)}`;
+  $("barra-precio").textContent = `${pesos(r.desde)} a ${pesos(r.hasta)}`;
+  $("r-unidad").textContent = cant > 1 ? `por ${cant} unidades · aprox. ${pesos(r.total / cant)} c/u` : "precio aproximado";
+  const medidas = estado.archivo
+    ? estado.archivo.medidas.map((x) => Math.round(x)).join(" x ") + " mm"
+    : (tam / 10).toLocaleString("es-AR") + " cm";
+  $("r-detalle").innerHTML = [
+    ["Tamaño", medidas],
+    ["Material", `${material} · ${colores} color${colores > 1 ? "es" : ""}`],
+    ["Diseño", r.diseno.precio ? `${r.diseno.desde ? "desde " : ""}${pesos(r.diseno.precio)}` : "incluido"],
+    ["Entrega", urgente ? "urgente (24-48 h)" : "a coordinar"],
+  ].map(([k, v]) => `<li><span>${k}</span><strong>${v}</strong></li>`).join("");
+
+  const msg = [
+    "Hola JEAL Studio 3D, usé el cotizador de la web:",
+    `• ${prod.nombre}${estado.archivo ? " (tengo el archivo STL)" : ""}`,
+    `• Tamaño: ${medidas}`,
+    `• Cantidad: ${cant}`,
+    `• ${material}, ${colores} color${colores > 1 ? "es" : ""}`,
+    `• Diseño: ${r.diseno.nombre}`,
+    urgente ? "• Lo necesito con urgencia" : "",
+    `Me dio entre ${pesos(r.desde)} y ${pesos(r.hasta)}. ¿Me confirman el precio?`,
+  ].filter(Boolean).join("\n");
+  $("r-wa").href = `https://wa.me/${P.contacto.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
+
+$("stl").addEventListener("change", async (e) => {
+  const f = e.target.files[0];
+  const info = $("stl-info");
+  estado.archivo = null;
+  info.hidden = true;
+  if (f) {
+    if (f.size > 60 * 1024 * 1024) {
+      info.hidden = false; info.textContent = "El archivo es muy pesado para calcularlo acá: mandalo por WhatsApp.";
+    } else {
+      try {
+        estado.archivo = leerSTL(await f.arrayBuffer());
+        const m = estado.archivo.medidas.map((x) => Math.round(x));
+        info.hidden = false;
+        info.textContent = `✓ ${f.name}: ${m.join(" x ")} mm`;
+        if (m.some((x) => x > 256)) info.textContent += " · es más grande que la impresora (256 mm): habría que partirlo.";
+        $("diseno").value = "listo";
+      } catch {
+        info.hidden = false; info.textContent = "No pude leer el archivo. Mandalo por WhatsApp y lo revisamos.";
+      }
+    }
+  }
+  calcular();
+});
+["tam", "cantidad", "colores", "material", "diseno", "urgente"].forEach((id) => $(id).addEventListener("input", calcular));
+
+fetch("precios.json", { cache: "no-cache" })
+  .then((r) => r.json())
+  .then((datos) => {
+    P = datos;
+    $("productos").innerHTML = Object.entries(P.productos)
+      .map(([k, p]) => `<button type="button" class="producto" data-clave="${k}">${p.nombre}</button>`).join("");
+    document.querySelectorAll(".producto").forEach((b) => b.addEventListener("click", () => elegir(b.dataset.clave)));
+    $("diseno").innerHTML = Object.entries(P.diseno)
+      .map(([k, d]) => `<option value="${k}">${d.nombre}${d.precio ? ` (${d.desde ? "desde " : ""}${pesos(d.precio)})` : ""}</option>`).join("");
+    $("r-aclaraciones").innerHTML = P.aclaraciones.map((a) => `<li>${a}</li>`).join("");
+    const pedido = new URLSearchParams(location.search).get("producto");
+    elegir(P.productos[pedido] ? pedido : "llavero");
+  })
+  .catch(() => { $("r-precio").textContent = "No se pudo cargar"; });
+</script>
+</body>
+</html>
