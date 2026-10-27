@@ -622,7 +622,8 @@
   var boardMode = "week"; // "week" (de la semana, el que da el premio) | "all" (histórico)
   // Récord "de la casa": objetivo difícil (display, no va a la DB). Así no todos salen #1.
   // Tuneable: subí/bajá el score si queda muy fácil o muy difícil de superar.
-  var HOUSE = { name: "🤖 Comisario 3D", score: 15000, house: true };
+  // 27/10/2026: 15000 era muy difícil (los jugadores reales andaban por 5400); se bajó a un número no redondo.
+  var HOUSE = { name: "🧩 Capitán Filamento", score: 11473, house: true };
   var LB_URL = window.JEAL_LB_URL || null;
   var LB_KEY = window.JEAL_LB_KEY || null;
 
